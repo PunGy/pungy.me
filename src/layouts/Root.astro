@@ -1,0 +1,73 @@
+---
+import 'normalize.css/normalize.css'
+
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon-32x32.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header>
+			<h1 class="logo"><a href="/">Maksim I</a></h1>
+		</header>
+
+		<slot />
+	</body>
+</html>
+<style is:global>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
+
+:root {
+	--background-color: #f5f5f5;
+	--blocks-background-color: #fff;
+	--text-color: #000000;
+	--radius: 0.5rem;
+}
+* {
+	box-sizing: border-box;
+}
+.logo {
+	font-size: 3rem;
+	margin: 0;
+}
+
+header, footer, aside, article, main:not(.semantic), .block {
+	background: var(--blocks-background-color);
+	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+	border-radius: var(--radius);
+}
+
+header {
+	padding: 0.5rem 3rem;
+}
+
+main {
+	padding: 2rem;
+}
+
+body {
+	background: var(--background-color);
+	margin: 0;
+	font-family: 'Roboto Slab', serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+
+
+</style>

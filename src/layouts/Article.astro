@@ -43,6 +43,7 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
       const mainBlock = document.querySelector('main')
       const mainBoundingClientRect = mainBlock.getBoundingClientRect()
       const { width: navigationWidth } = navigation.getBoundingClientRect()
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
 
       // the distance from the right edge of the screen
       const rightOffset =
@@ -50,14 +51,14 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
           - navigationWidth // minus navigation width
           - mainBoundingClientRect.left // minus main block left offset
           - mainBoundingClientRect.width // minus main block width
-          - 2 * 16; // minus main block padding
+          - 2 * rem; // minus main block padding
 
       document.addEventListener('scroll', () => {
         if (window.scrollY > 85) {
           navigation.style.position = 'fixed'
           navigation.style.top = '2rem'
           navigation.style.right = `${rightOffset}px`
-          mainBlock.style.marginRight = `${navigationWidth + 2 * 16}px`
+          mainBlock.style.marginRight = `${navigationWidth + 2 * rem}px`
         } else {
           navigation.style.position = 'static'
           mainBlock.style.marginRight = '2rem'

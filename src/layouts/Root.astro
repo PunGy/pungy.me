@@ -33,9 +33,13 @@ const { title } = Astro.props;
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
 
 :root {
-	--background-color: #f5f5f5;
-	--blocks-background-color: #fff;
-	--text-color: #000000;
+	--root-bg: #242423;
+	--primary-bg: #333533;
+	--primary-fg: #ffffff;
+  --secondary-fg: #e99b57;
+  --shadow-fg: #8f8678;
+  --shadow-bg: #403e3a;
+  --link-fg: #fca311;
 	--radius: 0.5rem;
 }
 * {
@@ -47,7 +51,7 @@ const { title } = Astro.props;
 }
 
 header, footer, aside, article, main:not(.semantic), .block {
-	background: var(--blocks-background-color);
+	background: var(--primary-bg);
 	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 	border-radius: var(--radius);
 }
@@ -61,13 +65,17 @@ main {
 }
 
 body {
-	background: var(--background-color);
+	background: var(--root-bg);
 	margin: 0;
 	font-family: 'Roboto Slab', serif;
 	font-size: 16px;
 	line-height: 1.5;
+  color: var(--primary-fg);
 }
 
+a {
+  color: var(--link-fg);
+}
 
 
 </style>

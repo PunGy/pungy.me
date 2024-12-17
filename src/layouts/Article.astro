@@ -11,6 +11,7 @@ const otherArticles = (
 const prevArticle = otherArticles.find((page) => page.frontmatter.part === content.part - 1)
 const nextArticle = otherArticles.find((page) => page.frontmatter.part === content.part + 1)
 
+const isCurrent = article => article.frontmatter.part === content.part
 ---
 <Layout title={content.title}>
   <div id="layout">
@@ -32,7 +33,19 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
     <aside id="series-navigation">
       <h3>Navigation:</h3>
       {otherArticles.map((article) => (
-          <a class={article.frontmatter.part === content.part ? 'current' : ''} href={article.url}>{article.frontmatter.part}. {article.frontmatter.title}</a>
+          <>
+            <a class={isCurrent(article) ? 'current' : ''} href={article.url}>{article.frontmatter.part}. {article.frontmatter.title}</a>
+            <div class="headings-container">
+              {isCurrent(article) ? article.getHeadings().slice(1).map(heading => (
+                <a
+                  href={`${article.url}#${heading.slug}`}
+                  style={`padding: 0.5rem 1rem 0.5rem ${1 + (0.4 * heading.depth)}rem`}
+                >
+                  {heading.text}
+                </a>
+              )) : null}
+            </div>
+          </>
       ))}
     </aside>
   </div>
@@ -84,24 +97,23 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
     align-items: center;
   }
   #navigation a {
-    border: 1px solid #aaaaaa;
-    background-color: #d3e8ff;
     border-radius: var(--radius);
     width: 300px;
+    background-color: var(--shadow-bg);
     text-align: center;
     height: fit-content;
   }
   #navigation a:hover {
-    background-color: #f0f6ff;
+    background-color: var(--secondary-fg);
   }
   a, .disabled-link {
     display: block;
     padding: 0.5rem 1rem;
-    border-bottom: 1px solid var(--blocks-background-color);
-    color: var(--text-color);
+    border-bottom: 1px solid var(--primary-bg);
+    color: var(--primary-fg);
   }
   .disabled-link {
-    color: #787878;
+    color: var(--shadow-fg);
   }
 
   @media (max-width: 800px) {
@@ -119,12 +131,12 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
     padding: 0 1rem;
   }
   main {
-    background-color: var(--blocks-background-color);
+    background-color: var(--primary-bg);
     max-width: 1000px;
     margin-right: 2rem;
   }
   aside {
-    background-color: var(--blocks-background-color);
+    background-color: var(--primary-bg);
     width: 300px;
     height: fit-content;
   }
@@ -134,12 +146,27 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
   }
 
   #series-navigation a:hover {
-    background-color: #f0f6ff;
+    background-color: var(--shadow-bg);
+  }
+  .headings-container {
+    background-color: #3c3b39;
+    border-bottom: var(--shadow-fg);
+    border-width: 1px;
+  }
+
+  a, .disabled-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--primary-bg);
+    color: var(--primary-fg);
+  }
+  .disabled-link {
+    color: var(--shadow-fg);
   }
 
   .current {
     /* to override hover */
-    background-color: #d3e8ff !important;
+    background-color: var(--secondary-fg) !important;
   }
 
   @media (max-width: 1399px) {
@@ -163,6 +190,18 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
 </style>
 
 <style is:global>
+  :root {
+    --info-bg: #0d8294;
+    --warning-bg: var(--secondary-fg);
+
+    --code-bg: #24292e;
+    --code-fg: var(--secondary-fg);
+
+    --table-cell-bg: var(--primary-bg);
+    --table-cell-bg-even: #393a3e;
+    --table-header-bg: #586086;
+  }
+
   pre {
     padding: 1rem;
     border-radius: var(--radius);
@@ -174,12 +213,12 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
 
   code:not(pre code) {
     font-family: 'Roboto Mono', monospace;
-    background-color: #e9e9e9;
+    background-color: var(--code-bg);
     padding: 0 3px;
     border-radius: 3px;
     display: inline-block;
     border: 1px solid #a9a9a9;
-    color: #ce5757;
+    color: var(--code-fg);
 
   }
   panel {
@@ -188,14 +227,14 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
     border: 1px solid;
     border-radius: 5px;
     display: block;
-    background-color: #e9e9e9;
+    background-color: var(--root-bg);
   }
   panel.info {
-    background-color: #b4f0ff;
-    border-color: #4b7ba6;
+     background-color: var(--info-bg);
+     border-color: #4b7ba6; 
   }
   panel.warning {
-    background-color: #fff3b4;
+    background-color: var(--warning-bg);
     border-color: #a68f4b;
   }
   table, th, td {
@@ -207,16 +246,19 @@ const nextArticle = otherArticles.find((page) => page.frontmatter.part === conte
     padding: 8px;
   }
 
+  tr {
+    background-color: var(--table-cell-bg);
+  }
   tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: var(--table-cell-bg-even);
   }
 
   tr:hover {
-    background-color: #ddd;
+    background-color: var(--table-cell-bg-even);
   }
 
   th {
-    background-color: #4c8caf;
+    background-color: var(--table-header-bg);
     color: white;
   }
 

@@ -1,9 +1,27 @@
 ---
 import Layout from '../layouts/Root.astro';
 
-const articles = (
-    await Astro.glob('./articles/**/*.md')
-).filter((article) => article.frontmatter.part === 1);
+const isArticleSeries = article => article.frontmatter.collection_id != null;
+
+const series = new Map()
+
+// Only single heading articles
+const articles = Array.from(await Astro.glob('./articles/**/*.md'))
+  .reduce((articles, article) => {
+    if (isArticleSeries(article)) {
+      const { part, collection_id } = article.frontmatter;
+      series.set(
+        collection_id,
+        (series.get(collection_id) ?? 0) + 1,
+      )
+
+      return part === 1 
+        ? articles.concat({...article, count: () => series.get(collection_id)}) 
+        : articles;
+    }
+
+    return articles.concat(article)
+  }, [])
 ---
 
 <Layout title="PunGy:/Home">
@@ -19,10 +37,13 @@ const articles = (
             </p>
         </aside>
         <main class="semantic">
-            {articles.map(({ frontmatter: info, url }) => (
+      {articles.map(({ frontmatter: info, url, count }) => (
                 <a href={url} class="article block">
                     <h1>{info.title}</h1>
                     <p>{info.description}</p>
+                    {count ? (
+                      <span class="meta">{count()} pages</span>
+                    ) : null}
                 </a>
             ))}
         </main>
@@ -50,11 +71,15 @@ const articles = (
     }
     .article {
         text-decoration: none;
-        color: var(--text-color);
+        color: var(--primary-fg);
         display: block;
+        position: relative;
         max-width: 700px;
         margin: 0 auto;
         padding: 1rem;
+    }
+    .article .meta {
+      color: var(--shadow-fg);
     }
 
     aside {

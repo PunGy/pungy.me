@@ -2,7 +2,7 @@
 layout: "../../../layouts/Article.astro"
 title: "Type classes and ADTs"
 part: 4
-collection-id: fp-introduction
+collection_id: fp-introduction
 ---
 
 # 4. Type classes and ADTs

@@ -4,7 +4,7 @@ title: "Functional programming introduction"
 description:
   Functional programming is a significant, exciting, and complex topic that is gaining increasingly popular nowadays. In this article series, we will try to understand functional programming, the main principles, and how to use it in JS/TS.
 part: 1
-collection-id: fp-introduction
+collection_id: fp-introduction
 ---
 
 # 1. Introduction

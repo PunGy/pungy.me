@@ -2,7 +2,7 @@
 layout: "../../../layouts/Article.astro"
 title: "Main Concepts"
 part: 2
-collection-id: fp-introduction
+collection_id: fp-introduction
 ---
 
 # 2. Main Concepts

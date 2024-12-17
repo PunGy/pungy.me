@@ -2,7 +2,7 @@
 layout: "../../../layouts/Article.astro"
 title: "Functional programming in JS/TS"
 part: 5
-collection-id: fp-introduction
+collection_id: fp-introduction
 ---
 
 # 5. Functional programming in JS/TS

@@ -29,21 +29,26 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
         <aside>
             <!-- about myself, my picture and links to social --->
             <img id="myself-photo" src="/images/myself.jpg" alt="My picture" />
-            <p>
-                Hi, I am <strong>Maksim</strong>, a software engineer — a Computer Science enjoyer.
-            </p>
-            <p>
-                You can find me on <a href="https://github.com/PunGy">GitHub</a> and <a href="https://www.linkedin.com/in/pungy/">LinkedIn</a>.
-            </p>
+            <div id="text-container">
+              <p>
+                  Hi, I am <strong>Maksim</strong>, a software engineer — a Computer Science enjoyer.
+              </p>
+              <p>
+                  You can find me on <a href="https://github.com/PunGy">GitHub</a> and <a href="https://www.linkedin.com/in/pungy/">LinkedIn</a>.
+              </p>
+            </div>
         </aside>
         <main class="semantic">
-      {articles.map(({ frontmatter: info, url, count }) => (
+          {articles.map(({ frontmatter: info, url, count }) => (
                 <a href={url} class="article block">
                     <h1>{info.title}</h1>
                     <p>{info.description}</p>
-                    {count ? (
-                      <span class="meta">{count()} pages</span>
-                    ) : null}
+                    <div class="meta-container">
+                      {count
+                        ? <span class="meta">{count()} pages</span>
+                        : <span class="meta">Article</span>}
+                      <span class="meta">{info.date}</span>
+                    </div>
                 </a>
             ))}
         </main>
@@ -81,6 +86,11 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
     .article .meta {
       color: var(--shadow-fg);
     }
+    .meta-container {
+      display: flex;
+      justify-content: space-between;
+
+    }
 
     aside {
         width: 300px;
@@ -107,16 +117,25 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
     }
     @media (max-width: 1100px) {
         #layout {
-            flex-direction: column;
+          flex-direction: column;
+          padding: 0;
+        }
+        #myself-photo {
+          width: 200px;
+          margin: 0 auto;
+          border-radius: 50%;
         }
         aside {
-            display: none;
+          margin: 0 auto 1rem auto;
+          padding: 0.5rem 1rem;
+          box-shadow: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
         }
     }
     @media (max-width: 700px) {
-        #layout {
-            padding: 1rem 0;
-        }
         h1 {
             font-size: 1.5rem;
         }

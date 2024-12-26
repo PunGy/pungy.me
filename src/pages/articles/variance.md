@@ -41,13 +41,11 @@ move(cat) // Any cat can move
 meow(animal) // Not every animal can meow
 ```
 
-Precise: `You can use B where A is expected, if B < A`
+Precise: `You can use B where A is expected, if B < A`.
 
 ```typescript
 type Co<V> = () => V;
 function covariance<Wide, Narrow extends Wide>(
-    w: Wide,
-    n: Narrow,
     covarianceW: Co<Wide>,
     covarianceN: Co<Narrow>,
 ) {
@@ -56,9 +54,9 @@ function covariance<Wide, Narrow extends Wide>(
 }
 ```
 
-## Contravariace
+## Contravariance
 
-Contravariance is an Covariance. The most tricky one.
+Contravariance is an opposite of Covariance. The most tricky one I reckon.
 In contravariance, when `Narrow/Child` is expected, the `Wide/Parent` can be used instead.
 
 In which circumstances it can be happed? Well, imagine some `processor` or `handler` of something.
@@ -115,13 +113,11 @@ serveAnimalFood(processCatFood);
 serveCatFood(processAnimalFood);
 ```
 
-Precise: `You can use handler for A where handler for B is expected, if B < A`
+Precise: `You can use handler for A where handler for B is expected, if B < A`.
 
 ```typescript
 type Contra<V> = (v: V) => void;
 function contravariance<Wide, Narrow extends Wide>(
-    w: Wide,
-    n: Narrow,
     contraW: Contra<Wide>,
     contraN: Contra<Narrow>,
 ) {
@@ -132,16 +128,16 @@ function contravariance<Wide, Narrow extends Wide>(
 
 ## Invariance
 
-Invariance is easier, especially if you understand already how the above two is works.
-It represents the absense of interchangeablity. The real world example of such relationship
-can be found in waste sorting.
+Invariance is easier, especially if you understand already a two above works.
+It represents the absense of interchangeablity. In nominal type systems, like in Java, this is the only type of variance.
+The real world example of such relationship can be found in waste sorting.
 
 There is a general meaning of `Trash`, and some variances of it, like `PaperWaste`, `FoodWaste`, etc.
-And, if your waste is classified, it has **appropriate** trash bin, you should use **this and only this** bin.
+And, if your waste is classified, and it has an **appropriate** trash bin, you should use **this and only this** bin.
 
 ```
-In waste sorting, you can't put in GeneralWaste bin a waste, that can be sorted
-And you can only put a waste in a bin of appropriate type
+In waste sorting, you can't put a waste in a general bin, if it can be sorted.
+You can only put a waste in a bin of an appropriate type.
 ```
 
 ```typescript
@@ -164,8 +160,6 @@ Precise: `You can use A only in places where A is expected`.
 ```typescript
 type Invariant<V> = (v: V) => V;
 function invariance<Wide, Narrow extends Wide>(
-    w: Wide,
-    n: Narrow,
     inW: Invariant<Wide>,
     inN: Invariant<Narrow>,
 ) {
@@ -176,8 +170,8 @@ function invariance<Wide, Narrow extends Wide>(
 
 ## Bivariance
 
-The opposite of `invariance`. I don't think I need to widely describe it if you got
-the point of the previous types. But for decency: **Bivariance** represents **full** interchangeablity.
+The opposite of `invariance`. I don't think I need to broadly describe it if you got
+the point of the previous types. So in short words: **Bivariance** represents **full** interchangeablity.
 
 In TypeScript, the `bivariance` is not so widespread, but you still can find it. For example,
 we figured out that function parameters are `contravariant`. But with some exceptions:
@@ -186,8 +180,6 @@ methods are parameters are `bivariant`.
 ```typescript
 type Bivariance<V> = { foo(v: V): void; }
 function bivariance<Wide, Narrow extends Wide>(
-    w: Wide,
-    n: Narrow,
     biW: Bivariance<Wide>,
     biN: Bivariance<Narrow>,
 ) {
@@ -196,7 +188,7 @@ function bivariance<Wide, Narrow extends Wide>(
 }
 ```
 
-Yeah, TypeScript decided it's okay. But, you can change it using [Variance Annotation](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations)
+Yeah, TypeScript decided it's okay. But, you can change it using [Variance Annotation](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations).
 
 ```typescript
 // `in` keyword in generics makes it Contravariant
@@ -214,6 +206,6 @@ function contravariance<Wide, Narrow extends Wide>(
 
 # References
 
-- [difference between variances](https://stackoverflow.com/questions/66410115/difference-between-variance-covariance-contravariance-bivariance-and-invarian)
-- [TypeScript variance annotation](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations)
+- [Stackoverflow: difference between variances](https://stackoverflow.com/questions/66410115/difference-between-variance-covariance-contravariance-bivariance-and-invarian).
+- [TS Doc: TypeScript variance annotation](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations).
 

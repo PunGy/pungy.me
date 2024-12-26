@@ -8,33 +8,42 @@ const otherArticles = (
 )
     .filter((page) => page.frontmatter.collection_id === content.collection_id)
     .sort((page1, page2) => page1.frontmatter.part - page2.frontmatter.part)
-const prevArticle = otherArticles.find((page) => page.frontmatter.part === content.part - 1)
-const nextArticle = otherArticles.find((page) => page.frontmatter.part === content.part + 1)
+const isSeries = otherArticles.length > 1;
 
-const isCurrent = article => article.frontmatter.part === content.part
+const prevArticle = isSeries ? otherArticles.find((page) => page.frontmatter.part === content.part - 1) : null
+const nextArticle = isSeries ? otherArticles.find((page) => page.frontmatter.part === content.part + 1) : null
+
+const isCurrent = article => !isSeries || article.frontmatter.part === content.part
 ---
 <Layout title={content.title}>
   <div id="layout">
     <main>
       <slot/>
-      <div id="navigation">
-        {
-          prevArticle
-            ? <a href={prevArticle.url}>Previous: {prevArticle.frontmatter.part}. {prevArticle.frontmatter.title}</a>
-            : <span class="disabled-link">{content.part}. {content.title}</span>
-        }
-        {
-          nextArticle
-              ? <a href={nextArticle.url}>Next: {nextArticle.frontmatter.part}. {nextArticle.frontmatter.title}</a>
+      {isSeries ? (
+        <div id="navigation">
+          {
+            prevArticle
+              ? <a href={prevArticle.url}>Previous: {prevArticle.frontmatter.part}. {prevArticle.frontmatter.title}</a>
               : <span class="disabled-link">{content.part}. {content.title}</span>
-        }
-      </div>
+          }
+          {
+            nextArticle
+                ? <a href={nextArticle.url}>Next: {nextArticle.frontmatter.part}. {nextArticle.frontmatter.title}</a>
+                : <span class="disabled-link">{content.part}. {content.title}</span>
+          }
+        </div>
+      ) : null}
     </main>
     <aside id="series-navigation">
       <h3>Navigation:</h3>
       {otherArticles.map((article) => (
           <>
-            <a class={isCurrent(article) ? 'current' : ''} href={article.url}>{article.frontmatter.part}. {article.frontmatter.title}</a>
+            <a 
+              class={isCurrent(article) ? 'current' : ''}
+              href={article.url}
+            >
+              {isSeries ? (article.frontmatter.part + '. ') : ''}{article.frontmatter.title}
+            </a>
             <div class="headings-container">
               {isCurrent(article) ? article.getHeadings().slice(1).map(heading => (
                 <a

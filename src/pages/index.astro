@@ -95,8 +95,7 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
     aside {
         width: 300px;
         padding: 0.5rem;
-        position: absolute;
-        left: 2rem;
+        margin-right: 1rem;
     }
 
     #myself-photo {
@@ -107,12 +106,6 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
     @media(max-width: 1500px) {
         #layout {
             justify-content: flex-start;
-        }
-        main {
-            flex: 1 1 auto;
-        }
-        aside {
-            position: initial;
         }
     }
     @media (max-width: 1100px) {

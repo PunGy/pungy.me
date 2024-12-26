@@ -9,14 +9,21 @@ date: 21/12/2024
 # Variance
 
 In type theory, variance is describing a relationship between two generic types.
+Like, in which circumstances the Parent can be replaced with the Child, in which are not, etc.
+
+You can find a lot of resources on this topic, especially highly mathematic one,
+but actually quite a few of them describes it in **short and natural** terms.
+
+I will try to do this here.
 
 ## Covariance
 
-The `covariance` relationship represents a general subtyping.
+The `covariance` relationship represents a general subtyping, when more `Narrow/Child` type
+can be used in places where more `Wide/Parent` type is expected. For example:
 
 ```
-I can pass a Cat where an Animal is expected
-But I can't pass an Animal where the Cat is expected
+I can use a Cat where an Animal is expected
+But I can't use an Animal where the Cat is expected
 ```
 
 ```typescript
@@ -38,22 +45,37 @@ Precise: `You can use B where A is expected, if B < A`
 
 ```typescript
 type Co<V> = () => V;
-function covariance<A, B extends A>(t: B, b: A, coB: Co<B>, coA: Co<A>) {
-  b = a; // okay
-  a = b; // error!
-
-  coA = coB; // okay
-  coB = coA; // error!
+function covariance<Wide, Narrow extends Wide>(
+    w: Wide,
+    n: Narrow,
+    covarianceW: Co<Wide>,
+    covarianceN: Co<Narrow>,
+) {
+  covarianceW = covarianceN; // Okay! N can replace W (Cat can be used where Animal expected)
+  covarianceN = covarianceW; // Error! W cannot replace N (Not any animal can be treated like a cat)
 }
 ```
 
 ## Contravariace
 
-Contravariance relationship is represented in opposite direction of Covariance.
+Contravariance is an Covariance. The most tricky one.
+In contravariance, when `Narrow/Child` is expected, the `Wide/Parent` can be used instead.
+
+In which circumstances it can be happed? Well, imagine some `processor` or `handler` of something.
+For example, some processor of food, like for `AnimalFood`,
+which makes food more protein-rich (I guess it's good for any animal, isn't it?).
+And processor for `CatFood`, which makes it taste more **fishy** (silly but whatever).
+
+So, can you process a `CatFood` with an `AnimalFood` processor?
+Sure, more protein would not hurt a cat.
+But can you process an `AnimalFood` with the `CatFood` processor? I think not,
+not everybody loves a fishy taste.
+
+Let's repeat in more strict words:
 
 ```
-I can process Cat food in the same way how any Animal is processed
-But I can't process Animal food in the same way how Cat food is processed
+I can process a Cat food in the same way how any Animal food is processed.
+But I can't process Animal food in the same way how Cat food is processed.
 ```
 
 ```typescript
@@ -70,8 +92,19 @@ function processAnimalFood(animalFood: AnimalFood): void {
   // Add some protein //
 }
 
-function serveAnimalFood(processor: (food: AnimalFood) => void): void {}
-function serveCatFood(processor: (food: CatFood) => void): void {}
+/**
+ * Before serving, let's process the food
+ */
+function serveAnimalFood(processor: (food: AnimalFood) => void): void {
+    const food = new AnimalFood();
+    processor(food);
+    serve(food)
+}
+function serveCatFood(processor: (food: CatFood) => void): void {
+    const food = new CatFood();
+    processor(food);
+    serve(food)
+}
 
 // We can't use Cat food processor to serve an animal food!
 // Not all animals like fishy food!
@@ -86,18 +119,25 @@ Precise: `You can use handler for A where handler for B is expected, if B < A`
 
 ```typescript
 type Contra<V> = (v: V) => void;
-function contravariance<A, B extends A>(t: B, u: A, contraB: Contra<B>, contraA: Contra<A>) {
-  u = t; // okay
-  t = u; // error!
-
-  contraA = contraB; // error!
-  contraB = contraA; // okay
+function contravariance<Wide, Narrow extends Wide>(
+    w: Wide,
+    n: Narrow,
+    contraW: Contra<Wide>,
+    contraN: Contra<Narrow>,
+) {
+  contraW = contraN; // Error! W cannot be replaced with N
+  contraN = contraW; // Okay! N can be replaced with W
 }
 ```
 
 ## Invariance
 
-Invariance relationship tells that some type can be used only with the exact same type.
+Invariance is easier, especially if you understand already how the above two is works.
+It represents the absense of interchangeablity. The real world example of such relationship
+can be found in waste sorting.
+
+There is a general meaning of `Trash`, and some variances of it, like `PaperWaste`, `FoodWaste`, etc.
+And, if your waste is classified, it has **appropriate** trash bin, you should use **this and only this** bin.
 
 ```
 In waste sorting, you can't put in GeneralWaste bin a waste, that can be sorted
@@ -118,3 +158,62 @@ function organycBin(waste: FoodWaste) {}
 unrecycledBin(new FoodWaste()); // You can't pass FoodWaste to unrecycled bin, are you criminal?
 organycBin(new Waste()); // You can't pass unclassified waste to organyc bin, are you criminal???
 ```
+
+Precise: `You can use A only in places where A is expected`.
+
+```typescript
+type Invariant<V> = (v: V) => V;
+function invariance<Wide, Narrow extends Wide>(
+    w: Wide,
+    n: Narrow,
+    inW: Invariant<Wide>,
+    inN: Invariant<Narrow>,
+) {
+  inW = inN; // Error! They are not interchangeable
+  inN = inW; // Error! Same here
+}
+```
+
+## Bivariance
+
+The opposite of `invariance`. I don't think I need to widely describe it if you got
+the point of the previous types. But for decency: **Bivariance** represents **full** interchangeablity.
+
+In TypeScript, the `bivariance` is not so widespread, but you still can find it. For example,
+we figured out that function parameters are `contravariant`. But with some exceptions:
+methods are parameters are `bivariant`.
+
+```typescript
+type Bivariance<V> = { foo(v: V): void; }
+function bivariance<Wide, Narrow extends Wide>(
+    w: Wide,
+    n: Narrow,
+    biW: Bivariance<Wide>,
+    biN: Bivariance<Narrow>,
+) {
+  biW = biN; // Okay!
+  biN = biW; // Okay!
+}
+```
+
+Yeah, TypeScript decided it's okay. But, you can change it using [Variance Annotation](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations)
+
+```typescript
+// `in` keyword in generics makes it Contravariant
+type Contra<in V> = { foo(v: V): void; }
+function contravariance<Wide, Narrow extends Wide>(
+    w: Wide,
+    n: Narrow,
+    contraW: Contra<Wide>,
+    contraN: Contra<Narrow>,
+) {
+  contraW = contraN; // Error! W cannot be replaced with N
+  contraN = contraW; // Okay! N can be replaced with W
+}
+```
+
+# References
+
+- [difference between variances](https://stackoverflow.com/questions/66410115/difference-between-variance-covariance-contravariance-bivariance-and-invarian)
+- [TypeScript variance annotation](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations)
+

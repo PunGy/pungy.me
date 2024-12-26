@@ -3,9 +3,9 @@ import Layout from './Root.astro'
 const { props } = Astro
 const { content } = props
 
-const otherArticles = (
-    await Astro.glob(`../pages/**/*.md`)
-)
+const otherArticles = Array.from(
+    await Astro.glob(`../pages/articles/**/*.md`)
+  )
     .filter((page) => page.frontmatter.collection_id === content.collection_id)
     .sort((page1, page2) => page1.frontmatter.part - page2.frontmatter.part)
 const isSeries = otherArticles.length > 1;

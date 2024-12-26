@@ -3,7 +3,6 @@ layout: "../../../layouts/Article.astro"
 title: "Categories and Functors"
 part: 3
 collection_id: fp-introduction
-
 ---
 
 # 3. Categories and Functors

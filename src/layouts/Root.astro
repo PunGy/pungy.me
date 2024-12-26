@@ -30,51 +30,127 @@ const { title } = Astro.props;
 	</body>
 </html>
 <style is:global>
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
 
-:root {
-	--root-bg: #242423;
-	--primary-bg: #333533;
-	--primary-fg: #ffffff;
-  --secondary-fg: #e99b57;
-  --shadow-fg: #8f8678;
-  --shadow-bg: #403e3a;
-  --link-fg: #fca311;
-	--radius: 0.5rem;
-}
-* {
-	box-sizing: border-box;
-}
-.logo {
-	font-size: 3rem;
-	margin: 0;
-}
+  :root {
+    --root-bg: #242423;
+    --primary-bg: #333533;
+    --primary-fg: #ffffff;
+    --secondary-fg: #e99b57;
+    --shadow-fg: #8f8678;
+    --shadow-bg: #403e3a;
+    --link-fg: #fca311;
+    --radius: 0.5rem;
 
-header, footer, aside, article, main:not(.semantic), .block {
-	background: var(--primary-bg);
-	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-}
+    --info-bg: #0d8294;
+    --warning-bg: var(--secondary-fg);
 
-header {
-	padding: 0.5rem 3rem;
-}
+    --code-bg: #24292e;
+    --code-fg: var(--secondary-fg);
 
-main {
-	padding: 2rem;
-}
+    --table-cell-bg: var(--primary-bg);
+    --table-cell-bg-even: #393a3e;
+    --table-header-bg: #586086;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  .logo {
+    font-size: 3rem;
+    margin: 0;
+  }
 
-body {
-	background: var(--root-bg);
-	margin: 0;
-	font-family: 'Roboto Slab', serif;
-	font-size: 16px;
-	line-height: 1.5;
-  color: var(--primary-fg);
-}
+  header, footer, aside, article, main:not(.semantic), .block {
+    background: var(--primary-bg);
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  }
 
-a {
-  color: var(--link-fg);
-}
+  header {
+    padding: 0.5rem 3rem;
+  }
 
+  main {
+    padding: 2rem;
+  }
+
+  body {
+    background: var(--root-bg);
+    margin: 0;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--primary-fg);
+  }
+
+  a {
+    color: var(--link-fg);
+  }
+  pre {
+    padding: 1rem;
+    border-radius: var(--radius);
+  }
+  code:not(pre code) {
+    font-family: 'Roboto Mono', monospace;
+    background-color: var(--code-bg);
+    padding: 0 3px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    color: var(--code-fg);
+  }
+
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr {
+    background-color: var(--table-cell-bg);
+  }
+  tr:nth-child(even) {
+    background-color: var(--table-cell-bg-even);
+  }
+
+  tr:hover {
+    background-color: var(--table-cell-bg-even);
+  }
+
+  th {
+    background-color: var(--table-header-bg);
+    color: white;
+  }
+
+  @media (max-width: 750px) {
+    table {
+      display: block;
+      max-width: fit-content;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+    td {
+      min-width: 250px;
+    }
+  }
+
+  panel {
+    max-width: 70%;
+    padding: 0.8rem 1rem;
+    border: 1px solid;
+    border-radius: 5px;
+    display: block;
+    background-color: var(--root-bg);
+  }
+  panel.info {
+     background-color: var(--info-bg);
+     border-color: #4b7ba6; 
+  }
+  panel.warning {
+    background-color: var(--warning-bg);
+    border-color: #a68f4b;
+  }
 
 </style>

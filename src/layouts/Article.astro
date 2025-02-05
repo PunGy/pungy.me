@@ -113,7 +113,7 @@ const isCurrent = article => !isSeries || article.frontmatter.part === content.p
     height: fit-content;
   }
   #navigation a:hover {
-    background-color: var(--secondary-fg);
+    background-color: var(--side-bar-selected);
   }
   a, .disabled-link {
     display: block;
@@ -158,7 +158,7 @@ const isCurrent = article => !isSeries || article.frontmatter.part === content.p
     background-color: var(--shadow-bg);
   }
   .headings-container {
-    background-color: #3c3b39;
+    background-color: var(--side-bar-heading);
     border-bottom: var(--shadow-fg);
     border-width: 1px;
   }
@@ -176,6 +176,7 @@ const isCurrent = article => !isSeries || article.frontmatter.part === content.p
   .current {
     /* to override hover */
     background-color: var(--secondary-fg) !important;
+    color: var(--primary-bg);
   }
 
 

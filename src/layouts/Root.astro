@@ -1,5 +1,7 @@
 ---
 import 'normalize.css/normalize.css'
+import lightIcon from '../../assets/light-theme.png'
+import darkIcon from '../../assets/dark-theme.png'
 
 export interface Props {
 	title: string;
@@ -26,34 +28,84 @@ const { title, withoutHeader } = Astro.props;
     {withoutHeader ? null : (
       <header>
         <h1 class="logo"><a href="/">Maksim I</a></h1>
+        <button id="theme-button">
+        <img src={lightIcon.src}/>
+        </button>
       </header>
     )}
-
 		<slot />
+
+    <script define:vars={{ lightIcon, darkIcon }}>
+      const themeButton = document.getElementById('theme-button')
+      const themeIcon = themeButton.firstElementChild
+
+      function setLightTheme() {
+            localStorage.setItem("theme", "light")
+            themeIcon.src = lightIcon.src
+            document.documentElement.style.setProperty('--root-bg', '#f5f5f5'); // Light gray for the overall background
+            document.documentElement.style.setProperty('--primary-bg', '#ffffff'); // White for the primary background
+            document.documentElement.style.setProperty('--primary-fg', '#333333'); // Dark gray for primary text
+            document.documentElement.style.setProperty('--secondary-fg', '#0056b3'); // Deep blue for secondary text, headers, etc.
+            document.documentElement.style.setProperty('--shadow-fg', '#aaaaaa'); // Soft gray for shadow text
+            document.documentElement.style.setProperty('--shadow-bg', '#e0e0e0'); // Light gray for shadow backgrounds
+            document.documentElement.style.setProperty('--link-fg', '#1e90ff'); // Bright blue for links
+            document.documentElement.style.setProperty('--info-bg', '#d1ecf1'); // Soft blue for informational backgrounds
+            document.documentElement.style.setProperty('--warning-bg', '#fff3cd'); // Light yellow for warning backgrounds
+            document.documentElement.style.setProperty('--code-bg', '#f3f4f6'); // Very light gray for code backgrounds
+            document.documentElement.style.setProperty('--code-fg', '#d63384'); // Raspberry pink for code font color for contrast
+            document.documentElement.style.setProperty('--table-cell-bg', '#ffffff'); // White for table cell backgrounds
+            document.documentElement.style.setProperty('--table-cell-bg-even', 'var(--code-bg)'); // Slightly darker white for even table rows
+            document.documentElement.style.setProperty('--table-header-bg', '#586086'); // Light blue-gray for table header backgrounds
+
+            document.documentElement.style.setProperty('--side-bar-selected', 'var(--info-bg)')
+            document.documentElement.style.setProperty('--side-bar-heading', 'var(--code-bg)')
+            document.documentElement.style.setProperty('--side-bar-heading-selected', 'var(--primary-bg)')
+       }
+
+        function setDarkTheme() {
+            localStorage.setItem("theme", "dark")
+            themeIcon.src = darkIcon.src
+            document.documentElement.style.setProperty('--root-bg', '#242423');
+            document.documentElement.style.setProperty('--primary-bg', '#333533');
+            document.documentElement.style.setProperty('--primary-fg', '#ffffff');
+            document.documentElement.style.setProperty('--secondary-fg', '#e99b57');
+            document.documentElement.style.setProperty('--shadow-fg', '#8f8678');
+            document.documentElement.style.setProperty('--shadow-bg', '#403e3a');
+            document.documentElement.style.setProperty('--link-fg', '#fca311');
+            document.documentElement.style.setProperty('--info-bg', '#0d8294');
+            document.documentElement.style.setProperty('--warning-bg', 'var(--secondary-fg)');
+            document.documentElement.style.setProperty('--code-bg', '#24292e');
+            document.documentElement.style.setProperty('--code-fg', 'var(--secondary-fg)');
+            document.documentElement.style.setProperty('--table-cell-bg', 'var(--primary-bg)');
+            document.documentElement.style.setProperty('--table-cell-bg-even', '#393a3e');
+            document.documentElement.style.setProperty('--table-header-bg', '#586086');
+
+            document.documentElement.style.setProperty('--side-bar-selected', 'var(--secondary-fg)')
+            document.documentElement.style.setProperty('--side-bar-heading', '#3c3b39')
+            document.documentElement.style.setProperty('--side-bar-heading-selected', 'var(--primary-fg)')
+        }
+
+      if (localStorage.getItem("theme") === "dark") {
+        setDarkTheme()
+      } else {
+        setLightTheme()
+      }
+
+      themeButton.addEventListener('click', () => {
+        if (localStorage.getItem("theme") === "dark") {
+          setLightTheme()
+        } else {
+          setDarkTheme()
+        }
+      })
+    </script>
 	</body>
 </html>
 <style is:global>
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
 
   :root {
-    --root-bg: #242423;
-    --primary-bg: #333533;
-    --primary-fg: #ffffff;
-    --secondary-fg: #e99b57;
-    --shadow-fg: #8f8678;
-    --shadow-bg: #403e3a;
-    --link-fg: #fca311;
     --radius: 0.5rem;
-
-    --info-bg: #0d8294;
-    --warning-bg: var(--secondary-fg);
-
-    --code-bg: #24292e;
-    --code-fg: var(--secondary-fg);
-
-    --table-cell-bg: var(--primary-bg);
-    --table-cell-bg-even: #393a3e;
-    --table-header-bg: #586086;
   }
   * {
     box-sizing: border-box;
@@ -63,6 +115,13 @@ const { title, withoutHeader } = Astro.props;
     margin: 0;
   }
 
+  #theme-button {
+    background: none;
+    border: none;
+    color: var(--primary-fg);
+    cursor: pointer;
+  }
+
   header, footer, aside, article, main:not(.semantic), .block {
     background: var(--primary-bg);
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
@@ -70,7 +129,8 @@ const { title, withoutHeader } = Astro.props;
 
   header {
     padding: 0.5rem 3rem;
-    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-between;
   }
 
   main {

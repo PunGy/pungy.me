@@ -168,6 +168,10 @@ const { title, withoutHeader } = Astro.props;
     color: var(--code-fg);
   }
 
+  pre code {
+    font-size: 1rem;
+  }
+
   table, th, td {
     border: 1px solid #ddd;
   }
@@ -202,6 +206,10 @@ const { title, withoutHeader } = Astro.props;
     }
     td {
       min-width: 250px;
+    }
+
+    header {
+      padding: 0.5rem 1.5rem;
     }
   }
 

@@ -1,5 +1,11 @@
 ---
+import Article from 'layouts:/Article.astro';
 import Layout from '../layouts/Root.astro';
+
+const timestamp = dateString => {
+  const [day, month, year] = dateString.split('/').map(d => parseInt(d, 10))
+  return new Date(day, month - 1, year).getTime()
+}
 
 const isArticleSeries = article => article.frontmatter.collection_id != null;
 
@@ -22,6 +28,9 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
 
     return articles.concat(article)
   }, [])
+  .sort((a1, a2) => {
+    return timestamp(a2.frontmatter.date) - timestamp(a1.frontmatter.date) 
+  })
 ---
 
 <Layout title="PunGy:/Home">

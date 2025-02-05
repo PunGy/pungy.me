@@ -110,6 +110,9 @@ const { title, withoutHeader } = Astro.props;
   * {
     box-sizing: border-box;
   }
+  img {
+    max-width: 100%;
+  }
   .logo {
     font-size: 3rem;
     margin: 0;
@@ -209,6 +212,11 @@ const { title, withoutHeader } = Astro.props;
     border-radius: 5px;
     display: block;
     background-color: var(--root-bg);
+  }
+  @media (max-width: 1000px) {
+    panel {
+      max-width: 100%;
+    }
   }
   panel.info {
      background-color: var(--info-bg);

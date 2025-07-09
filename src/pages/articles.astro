@@ -1,0 +1,153 @@
+---
+import Article from 'layouts:/Article.astro';
+import Layout from '../layouts/Root.astro';
+
+const timestamp = dateString => {
+  const [day, month, year] = dateString.split('/').map(d => parseInt(d, 10))
+  return new Date(day, month - 1, year).getTime()
+}
+
+const isArticleSeries = article => article.frontmatter.collection_id != null;
+
+const series = new Map()
+
+// Only single heading articles
+const articles = Array.from(await Astro.glob('./articles/**/*.md'))
+  .reduce((articles, article) => {
+    if (isArticleSeries(article)) {
+      const { part, collection_id } = article.frontmatter;
+      series.set(
+        collection_id,
+        (series.get(collection_id) ?? 0) + 1,
+      )
+
+      return part === 1 
+        ? articles.concat({...article, count: () => series.get(collection_id)}) 
+        : articles;
+    }
+
+    return articles.concat(article)
+  }, [])
+  .sort((a1, a2) => {
+    return timestamp(a2.frontmatter.date) - timestamp(a1.frontmatter.date) 
+  })
+---
+
+<Layout title="PunGy:/articles">
+    <div id="layout">
+        <aside>
+            <!-- about myself, my picture and links to social --->
+            <img id="myself-photo" src="/images/myself.jpg" alt="My picture" />
+            <div id="text-container">
+              <p>
+                Hi, I am <strong>Maksim</strong>. I love UI, graphics, programming languages, and anything that looks cool on the screen.
+              </p>
+              <p>
+                You can find me on <a href="https://github.com/PunGy">GitHub</a> and <a href="https://www.linkedin.com/in/pungy/">LinkedIn</a>.
+              </p>
+            </div>
+        </aside>
+        <main class="semantic">
+          {articles.map(({ frontmatter: info, url, count }) => (
+                <a href={url} class="article block">
+                    <h1>{info.title}</h1>
+                    <p>{info.description}</p>
+                    <div class="meta-container">
+                      {count
+                        ? <span class="meta">{count()} pages</span>
+                        : <span class="meta">Article</span>}
+                      <span class="meta">{info.date}</span>
+                    </div>
+                </a>
+            ))}
+        </main>
+    </div>
+</Layout>
+
+<style>
+    #layout {
+        display: flex;
+        padding: 1rem;
+        position: relative;
+        justify-content: center;
+    }
+    main {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+    p {
+        padding: 0 1rem;
+    }
+    h1 {
+        margin: 0.5rem;
+    }
+    .article {
+        text-decoration: none;
+        color: var(--primary-fg);
+        display: block;
+        position: relative;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+    .article .meta {
+      color: var(--shadow-fg);
+    }
+    .meta-container {
+      display: flex;
+      justify-content: space-between;
+
+    }
+
+    aside {
+        width: 300px;
+        min-width: 300px;
+        padding: 0.5rem;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+    }
+
+    #myself-photo {
+        width: 100%;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    @media(max-width: 1200px) {
+        #layout {
+          justify-content: flex-start;
+        }
+        main {
+          flex-grow: 1;
+        }
+        main > a {
+          max-width: 100%;
+        }
+    }
+    @media (max-width: 900px) {
+        #layout {
+          flex-direction: column;
+          padding: 0;
+        }
+        #myself-photo {
+          width: 200px;
+          margin: 0 auto;
+          border-radius: 50%;
+        }
+        aside {
+          margin: 0 auto 1rem auto;
+          padding: 0.5rem 1rem;
+          box-shadow: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+    }
+    @media (max-width: 700px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+    }
+</style>

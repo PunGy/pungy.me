@@ -1,0 +1,153 @@
+---
+import Layout from '../../layouts/Root.astro';
+import currencyImg from '../../../assets/currency-converter.png'
+import homeImg from '../../../assets/home-page-demo.png'
+import muraImg from '../../../assets/mura-engine-demo.png'
+import fluidImg from '../../../assets/fluid-demo.png'
+
+interface Project {
+  title: string;
+  description: string;
+  img: string;
+  sourceLink: string;
+  stack?: Array<string>;
+  link?: string;
+}
+const projects: Array<Project> = [
+  {
+    title: 'Currency converter',
+    description: 'Minimalistic currency converter capable to work offline and being installed (PWA).',
+    img: currencyImg.src,
+    stack: ['React', 'Rx.js'],
+    sourceLink: 'https://github.com/PunGy/currency-converter',
+    link: 'https://currency-app.pungy.me/',
+  },
+  {
+    title: 'Fluid',
+    description: 'Powerfull library for creating reactive systems with maximum control.',
+    img: fluidImg.src,
+    stack: ['TypeScript'],
+    sourceLink: 'https://github.com/PunGy/fluid',
+    link: 'https://codesandbox.io/p/sandbox/q3r8cm'
+  },
+  {
+    title: 'Home Page',
+    description: 'The website you are currently reading! Fully static with Astro meta-framework!',
+    img: homeImg.src,
+    stack: ['Astro.js'],
+    sourceLink: 'https://github.com/PunGy/pungy.me',
+
+    link: 'https://pungy.me'
+  },
+  {
+    title: 'Mura game engine',
+    description: 'Canvas2D game engine made from scratch. Deserves complete rewrite, but some games were implemented - Space Invaders!',
+    img: muraImg.src,
+    stack: ['TypeScript', 'Rx.js'],
+    sourceLink: 'https://github.com/PunGy/mura',
+    link: 'https://mura.pungy.me/'
+  },
+]
+---
+
+<Layout title="PunGy:/projects">
+  <div id="layout">
+    <div id="projects">
+      {projects.map(project => (
+      <div class="project-card block">
+        <img src={project.img} alt="">
+        <div class="card-content">
+          <span class="title">{project.title}</span>
+          <div class="stack">
+            {project.stack.map(tool => (
+            <span>{tool}</span>
+            ))}
+          </div>
+          <span class="description">{project.description}</span>
+        </div>
+        <div class="links">
+          <a href={project.sourceLink}>source</a>
+          {project.link && <a href={project.link}>try to use!</a>}
+        </div>
+      </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+
+#layout {
+  display: flex;
+  padding: 1rem;
+  position: relative;
+  justify-content: center;
+}
+
+#projects {
+  display: flex;
+  width: 1000px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.project-card {
+  width: 310px;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  color: var(--primary-fg);
+  border-radius: 5px;
+}
+
+.project-card .card-content {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.project-card img {
+  border-radius: 5px 5px 0 0;
+}
+.project-card .title {
+  font-size: 1.6rem;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+.project-card .stack {
+  font-size: 0.9rem;
+  color: var(--secondary-fg);
+  margin-bottom: 0.3rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.project-card .links {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  padding: 0 0.5rem 0.5rem;
+  flex-grow: 1;
+  align-items: end;
+}
+
+@media (max-width: 1050px) {
+  #projects {
+    width: 650px;
+  }
+}
+
+@media (max-width: 700px) {
+  #projects {
+    width: 100%;
+    flex-direction: column;
+  }
+  .project-card {
+    width: 100%;
+    height: auto;
+  }
+}
+
+</style>

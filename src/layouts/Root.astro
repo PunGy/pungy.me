@@ -28,6 +28,11 @@ const { title, withoutHeader } = Astro.props;
     {withoutHeader ? null : (
       <header>
         <h1 class="logo"><a href="/">Maksim I</a></h1>
+        <div class="links">
+          <a href="/articles">articles</a>
+          <span>&nbsp;|&nbsp;</span>
+          <a href="/projects">projects</a>
+        </div>
         <button id="theme-button">
         <img src={lightIcon.src}/>
         </button>
@@ -136,6 +141,12 @@ const { title, withoutHeader } = Astro.props;
     justify-content: space-between;
   }
 
+  .links {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+
   main {
     padding: 2rem;
     font-size: 1.2rem;
@@ -210,6 +221,11 @@ const { title, withoutHeader } = Astro.props;
 
     header {
       padding: 0.5rem 1.5rem;
+      flex-wrap: wrap;
+    }
+    .logo {
+      width: 100%;
+      text-align: center;
     }
   }
 

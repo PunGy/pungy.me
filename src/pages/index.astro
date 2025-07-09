@@ -1,65 +1,42 @@
 ---
-import Article from 'layouts:/Article.astro';
 import Layout from '../layouts/Root.astro';
-
-const timestamp = dateString => {
-  const [day, month, year] = dateString.split('/').map(d => parseInt(d, 10))
-  return new Date(day, month - 1, year).getTime()
-}
-
-const isArticleSeries = article => article.frontmatter.collection_id != null;
-
-const series = new Map()
-
-// Only single heading articles
-const articles = Array.from(await Astro.glob('./articles/**/*.md'))
-  .reduce((articles, article) => {
-    if (isArticleSeries(article)) {
-      const { part, collection_id } = article.frontmatter;
-      series.set(
-        collection_id,
-        (series.get(collection_id) ?? 0) + 1,
-      )
-
-      return part === 1 
-        ? articles.concat({...article, count: () => series.get(collection_id)}) 
-        : articles;
-    }
-
-    return articles.concat(article)
-  }, [])
-  .sort((a1, a2) => {
-    return timestamp(a2.frontmatter.date) - timestamp(a1.frontmatter.date) 
-  })
+import Resume from './aboutme.md'
+import lightIcon from '../../assets/light-theme.png'
+import darkIcon from '../../assets/dark-theme.png'
 ---
 
-<Layout title="PunGy:/Home">
+<Layout title="PunGy:/" withoutHeader>
     <div id="layout">
         <aside>
             <!-- about myself, my picture and links to social --->
-            <img id="myself-photo" src="/images/myself.jpg" alt="My picture" />
             <div id="text-container">
+              <img id="myself-photo" src="/images/myself.jpg" alt="My picture" />
+              <button id="theme-button">
+                <img src={lightIcon.src}/>
+              </button>
+              <h1>Maksim Iakovlev</h1>
+              <h2>
+                Senior Software Engineer at Yandex
+              </h2>
+              <div class="header-buttons">
+                <div class="index-links">
+                  <a href="/articles">articles</a>
+                  <span>&nbsp;|&nbsp;</span>
+                  <a href="/projects">projects</a>
+                </div>
+              </div>
               <p>
-                Hi, I am <strong>Maksim</strong>. I love UI, graphics, programming languages, and anything that looks cool on the screen.
+                I love UI, graphics, programming languages, and anything that looks cool on the screen.
               </p>
               <p>
-                  You can find me on <a href="https://github.com/PunGy">GitHub</a> and <a href="https://www.linkedin.com/in/pungy/">LinkedIn</a>.
+                Email: <strong>max.yakovlev555@gmail.com</strong>
               </p>
             </div>
         </aside>
         <main class="semantic">
-          {articles.map(({ frontmatter: info, url, count }) => (
-                <a href={url} class="article block">
-                    <h1>{info.title}</h1>
-                    <p>{info.description}</p>
-                    <div class="meta-container">
-                      {count
-                        ? <span class="meta">{count()} pages</span>
-                        : <span class="meta">Article</span>}
-                      <span class="meta">{info.date}</span>
-                    </div>
-                </a>
-            ))}
+            <div class="article block">
+                {<Resume/>}
+            </div>
         </main>
     </div>
 </Layout>
@@ -67,30 +44,30 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
 <style>
     #layout {
         display: flex;
-        padding: 1rem;
+        flex-direction: column;
+        padding: 0;
         position: relative;
         justify-content: center;
+    }
+    #text-container {
+      justify-content: center;
+      text-align: center;
     }
     main {
         padding: 0;
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-    }
-    p {
-        padding: 0 1rem;
-    }
-    h1 {
-        margin: 0.5rem;
+        font-size: 1.2rem;
     }
     .article {
         text-decoration: none;
         color: var(--primary-fg);
         display: block;
         position: relative;
-        max-width: 700px;
+        max-width: 900px;
         margin: 0 auto;
-        padding: 1rem;
+        padding: 1rem 2rem;
     }
     .article .meta {
       color: var(--shadow-fg);
@@ -98,49 +75,33 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
     .meta-container {
       display: flex;
       justify-content: space-between;
-
-    }
-
-    aside {
-        width: 300px;
-        padding: 0.5rem;
-        margin-right: 1rem;
-        font-size: 1.2rem;
     }
 
     #myself-photo {
-        width: 100%;
-        border-radius: var(--radius) var(--radius) 0 0;
+      width: 100%;
+      border-radius: var(--radius) var(--radius) 0 0;
     }
 
-    @media(max-width: 1500px) {
-        #layout {
-            justify-content: flex-start;
-        }
+    #myself-photo {
+      width: 200px;
+      margin: 0 auto;
+      border-radius: 50%;
     }
-    @media (max-width: 1100px) {
-        #layout {
-          flex-direction: column;
-          padding: 0;
-        }
-        #myself-photo {
-          width: 200px;
-          margin: 0 auto;
-          border-radius: 50%;
-        }
-        aside {
-          margin: 0 auto 1rem auto;
-          padding: 0.5rem 1rem;
-          box-shadow: none;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-        }
+    .block, aside {
+      box-shadow: none;
     }
-    @media (max-width: 700px) {
-        h1 {
-            font-size: 1.5rem;
-        }
+    aside {
+      margin: 0 auto 1rem auto;
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      font-size: 1.3rem;
+      border-bottom: 2px solid var(--shadow-bg);
+    }
+
+    #theme-button {
+      position: absolute;
     }
 </style>

@@ -152,9 +152,13 @@ const { title, withoutHeader } = Astro.props;
     font-size: 1.2rem;
   }
 
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
   body {
     background: var(--root-bg);
-    margin: 0;
     font-family: 'Roboto Slab', serif;
     font-size: 16px;
     line-height: 1.5;
@@ -163,6 +167,10 @@ const { title, withoutHeader } = Astro.props;
 
   a {
     color: var(--link-fg);
+  }
+  span, strong, a {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   pre {
     padding: 1rem;

@@ -4,6 +4,7 @@ import currencyImg from '../../../assets/currency-converter.png'
 import homeImg from '../../../assets/home-page-demo.png'
 import muraImg from '../../../assets/mura-engine-demo.png'
 import fluidImg from '../../../assets/fluid-demo.png'
+import vimImg from '../../../assets/vimImg.png'
 
 interface Project {
   title: string;
@@ -46,6 +47,13 @@ const projects: Array<Project> = [
     stack: ['TypeScript', 'Rx.js'],
     sourceLink: 'https://github.com/PunGy/mura',
     link: 'https://mura.pungy.me/'
+  },
+  {
+    title: 'NeoVIM config',
+    description: 'My configuration of NeoVIM which I use for day to day work.',
+    img: vimImg.src,
+    stack: ['Fennel', 'LazyVim'],
+    sourceLink: 'https://github.com/PunGy/neovim-dotfiles',
   },
 ]
 ---

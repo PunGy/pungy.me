@@ -13,23 +13,26 @@ date: 10/07/2025
 Reactivity is one of the most influential concepts in modern frontend
 development. Applications are expected to update promptly, propagate
 changes through complex data relationships, and remain reliable as they evolve.
-Most established reactive libraries — MobX, Vue’s reactivity system, Svelte, and
+Most established reactive libraries — `MobX`, `Vue`’s reactivity system, `Svelte`, and
 similar — offer developers tremendous convenience and power. I use them a lot
 and it's really nice how the Mobx makes your values **magically** reactive! But
 during using it for development of complex systems, I faced some issues: layers
-of implicit behavior, syntax restrictions, lack of control.
+of implicit behavior, syntax restrictions, lack of control. Other solutions,
+like `Rx.js`, does give you a control over the system, but with a lot of
+specifics of Functional-Reactive programming, which you **must** use and adopt,
+altogether with chaos in case of inproper use.
 
-Fluid was created out of a desire to rebalance reactivity in favor of clarity,
-predictability, and the level of control, even if it may affect convenience of
-usage and simplicity. It aims to reveal the entire path of state change, so
-that every mutations, every dependency, every notification and order of
-execution, is plainly visible and subject to the developer’s intent. Why would you need it?
-Some real-time applications, for example content editing tools like rich-text
-editors or spreadsheets might have a large and complex network of dependencies. In this cases "simplicity" of tools like Mobx can 
-
-What do I mean by "level of control"? Even in Mobx you can just restrict usage
-of `autorun` and `computed`, and enlisting all your dependencies with
-`reaction`. But Fluid goes far, far ahead of that!
+`Fluid` was created out of a desire to rebalance reactivity in favor of
+clarity, predictability, and the level of control, even if it may affect
+convenience of usage and simplicity. It aims to reveal the entire path of state
+change, so that every mutations, every dependency, every notification and order
+of execution, is plainly visible and subject to the developer’s intent. Why
+would you need it? Some real-time applications, for example content editing
+tools like rich-text editors or spreadsheets might have a large and complex
+network of dependencies. With huge and complex codebases, the "simplicity" of
+tools like MobX comes with questions like _"what is a full list of dependencies
+of the following computed?"_, _"what would happen if I make this getter a
+computed?"_, _"how to make this reaction happen after reaction **A**?"_
 
 ---
 
@@ -38,8 +41,9 @@ of `autorun` and `computed`, and enlisting all your dependencies with
 In order to make Fluid the way it works, it has three ground principles:
 
 1. Every reactive object is `type-constructor`(just like `Promise`)
-2. Everything is explicit.
-3. Everything can be controlled.
+2. Everything is **explicit**.
+3. Everything can be **controlled**.
+4. Everything is **synchronous**.
 
 ```typescript
 const _name_ = Fluid.val("Alice");
@@ -52,27 +56,192 @@ const _fullName_ = Fluid.derive(
 // Explicit subscription:
 Fluid.listen(
     _fullName_,
-    name => console.log("User full name:", name)
+    name => console.log("User full name: ", name)
 );
 
-Fluid.write(_name_, "Jane");
-// logs: Jane Liddel
+Fluid.write(_name_, "Jane"); // User full name: Jane Liddebell
+Fluid.read(_fullName_); // Jane Liddebell
 ```
 
 So here everything is just as in every reactive system:
 
 - Reactive values: `Fluid.val` (Read-Write).
 - Derivation: `Fluid.derive` (Readonly).
-- Listener: `Fluid.listen` (fire effect on change).
+- Listener: `Fluid.listen` (Fire effect on change).
+- Reading: `Fluid.read` (Returns current state of the reactive object).
+- Writing: `Fluid.write` (Set new state for the reactive value).
 
 ## What Makes Fluid Unique
 
-As I said before, Fluid have a lot more than just control
+From the example above we can say that Fluid is just another syntax for the
+same thing. But, it have uniq capabilities:
 
-### Controling evaluation order
+### 1. Controling evaluation order
+
+Usually, synchronous libraries make a tree of dependencies, looks for loop
+dependencies, resolves them and rebalance the execution.
+
+Let imagine following store: we have a cart store, the `price`, `shipping` fee
+and `tax` calculation. We need to calculate the total sum and print it.
+
+```typescript
+class Cart {
+  price = 0;
+
+  constructor() {
+    makeObservable(this, {
+      price: observable,
+      shipping: computed,
+      tax: computed,
+      showTotal: computed,
+    });
+  }
+
+  get shipping() {
+    return this.price > 50 ? 0 : 5.00
+  }
+  get tax() {
+    return this.price * 0.08; // 8%
+  }
+
+  get showTotal() {
+    const total = this.price + this.tax + this.shipping
+    return `Final price: $${total.toFixed(2)} (incl. tax: $${this.tax.toFixed(2)}, shipping: $${this.shipping.toFixed(2)})`
+  }
+}
+
+const cart = new Cart();
+
+cart.price = 20;
+console.log(cart.showTotal); // Final price: $26.60 (incl. tax: $1.60, shipping: $5.00)
+```
+
+We can see that a `showTotal` computed has three dependencies: `price`, `tax`,
+and `shipping`. MobX see that `shipping`, `tax` and `showTotal` depends on a
+single observable `price`, and it also understands that `showTotal` should be
+updated only after `shipping` and `tax`. The internal graph looks like following:
 
 
-### **1. Explicit and Transparent Data Flow**
+```
+   _price_
+ /         \
+tax      shipping
+ \         /
+  showTotal
+```
+
+And what is the most important thing here? After updating the `price`,
+`showTotal` should be updated only **once**! Because if every dependency would
+trigger an update on it's own update, there would be **three** updates of
+`showTotal`!
+
+Does a Fluid resolves that problem? No, it is not! But, it gives you a
+powerfull tool to resolve with by yourself: `priorities`.
+
+Resolved graph of dependencies above would build a following timeline of updates:
+
+```
+price
+ |
+ |--->tax--->shipping--->showTotal
+```
+
+In Fluid you must build this graph by yourself:
+
+```typescript
+const _price_ = Fluid.val()
+
+const _tax_ = Fluid.derive(
+  _price_,
+  price => price * 0.08, // 8% tax
+)
+const _shipping_ = Fluid.derive(
+  _price_,
+  price => price > 50 ? 0 : 5.00, // free shipping over $50
+)
+
+const _totalSummary_ = Fluid.derive(
+  _price_, // subscribe only to the root!
+  (price) => {
+    const tax = Fluid.read(_priceWithTax_)
+    const shipping = Fluid.read(_priceWithShipping_)
+    const total = price + tax + shipping
+    return `Final price: $${total.toFixed(2)} (incl. tax: $${tax.toFixed(2)}, shipping: $${shipping.toFixed(2)})`
+  },
+    // set priority: `after the base level`
+  { priority: Fluid.priorities.after(Fluid.priority.base) },
+)
+
+Fluid.write(_price_, 20.00)
+
+console.log(Fluid.read(_totalSummary_)); // Final price: $26.60 (incl. tax: $1.60, shipping: $5.00)
+```
+
+Every `derive` and `listen` has a priority option in a parameters field. It
+allows you to declare with what priority to execute the update.
+`_totalSummary_` depends only on the `_price_`, and update should be after the
+`base` pool of priorities, where by default are all dependencies lying.
+
+Priority is actually a number, and
+`Fluid.priorities.after(Fluid.priority.base)` is only a handy and readable way
+to say `-1`:
+
+```
+HIGHER
+ 0: [_tax_, _shipping_]
+-1: [_totalSummary_]
+LOWER
+```
+
+And yeah, it is really just a number, higher the number - higher the priority:
+
+```typescript
+const _msg_ = Fluid.val("")
+const log = console.log;
+
+Fluid.listen(
+    _msg_,
+    (msg) => log("3: " + msg),
+    { priority: 3 },
+)
+Fluid.listen(
+    _msg_,
+    (msg) => log("2: " + msg),
+    { priority: 2 },
+)
+Fluid.listen(
+    _msg_,
+    (msg) => log("4: " + msg),
+    { priority: 4 },
+)
+Fluid.listen(
+    _msg_,
+    (msg) => log("1: " + msg),
+    { priority: 1 },
+)
+
+Fluid.write(_msg_, "Hi?")
+
+// 4: Hi?
+// 3: Hi?
+// 2: Hi?
+// 1: Hi?
+```
+
+
+### 2. Transactions
+
+A common thing in every reactive system is batching. In MobX it is a very
+tricky aspect, with its `wrapper` based approach.
+
+In Fluid it might looks kinda scary maybe tricky at a first time, but very
+controllable and powerfull!
+
+Transaction is actually a delayed write with different
+
+```typescript
+
+```
 
 A core aspect of Fluid is its refusal to rely on implicit or automatic
 subscriptions. Every dependency and every listener must be explicitly
@@ -116,7 +285,7 @@ With Fluid, you can author multi-step updates confidently, knowing that
 only after all changes succeed will any effects be broadcast, and all
 listeners will fire in a defined sequence.
 
-```typescript 
+```typescript
 const transaction = Fluid.transaction.compose(
     Fluid.transaction.write(_a_, 100),
     Fluid.transaction.write(_b_, (b, ) => b * 2)

@@ -394,3 +394,8 @@ might be a great fit for you. It trades implicit convenience for explicit
 control, giving you the power to build predictable and highly performant state
 management systems.
 
+### Links
+
+- Source code: [GitHub](https://github.com/PunGy/fluid).
+- Use in your project: [NPM](https://www.npmjs.com/package/reactive-fluid).
+

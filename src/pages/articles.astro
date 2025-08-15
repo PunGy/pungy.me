@@ -1,5 +1,4 @@
 ---
-import Article from 'layouts:/Article.astro';
 import Layout from '../layouts/Root.astro';
 
 const timestamp = dateString => {
@@ -33,7 +32,7 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
   })
 ---
 
-<Layout title="PunGy:/articles">
+<Layout title="Articles">
     <div id="layout">
         <aside>
             <!-- about myself, my picture and links to social --->

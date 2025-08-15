@@ -1,10 +1,9 @@
 ---
-import Article from 'layouts:/Article.astro';
 import Layout from '../layouts/Root.astro';
 
 const timestamp = dateString => {
   const [day, month, year] = dateString.split('/').map(d => parseInt(d, 10))
-  return new Date(day, month - 1, year).getTime()
+  return new Date(year, month - 1, day).getTime();
 }
 
 const isArticleSeries = article => article.frontmatter.collection_id != null;
@@ -33,7 +32,7 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
   })
 ---
 
-<Layout title="PunGy:/articles">
+<Layout title="Articles">
     <div id="layout">
         <aside>
             <!-- about myself, my picture and links to social --->
@@ -107,6 +106,7 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
         padding: 0.5rem;
         margin-right: 1rem;
         font-size: 1.2rem;
+        height: fit-content;
     }
 
     #myself-photo {

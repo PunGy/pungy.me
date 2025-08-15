@@ -3,17 +3,24 @@ import Layout from './Root.astro'
 const { props } = Astro
 const { content } = props
 
-const otherArticles = Array.from(
+const isSeries = content.collection_id;
+
+const otherArticles = isSeries ? Array.from(
     await Astro.glob(`../pages/articles/**/*.md`)
   )
     .filter((page) => page.frontmatter.collection_id === content.collection_id)
     .sort((page1, page2) => page1.frontmatter.part - page2.frontmatter.part)
-const isSeries = otherArticles.length > 1;
+  : [props]
+
 
 const prevArticle = isSeries ? otherArticles.find((page) => page.frontmatter.part === content.part - 1) : null
 const nextArticle = isSeries ? otherArticles.find((page) => page.frontmatter.part === content.part + 1) : null
-
 const isCurrent = article => !isSeries || article.frontmatter.part === content.part
+
+const getHeadings = article => {
+  const headings = isSeries ? article.getHeadings() : article.headings
+  return headings.slice(1)
+}
 ---
 <Layout title={content.title}>
   <div id="layout">
@@ -45,7 +52,7 @@ const isCurrent = article => !isSeries || article.frontmatter.part === content.p
               {isSeries ? (article.frontmatter.part + '. ') : ''}{article.frontmatter.title}
             </a>
             <div class="headings-container">
-              {isCurrent(article) ? article.getHeadings().slice(1).map(heading => (
+              {isCurrent(article) ? getHeadings(article).map(heading => (
                 <a
                   href={`${article.url}#${heading.slug}`}
                   style={`padding: 0.5rem 1rem 0.5rem ${1 + (0.4 * heading.depth)}rem`}

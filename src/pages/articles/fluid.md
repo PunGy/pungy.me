@@ -86,6 +86,8 @@ same concepts. However, it provides unique capabilities:
 
 ### 1. Controlling evaluation order
 
+[Priorities API](https://github.com/PunGy/fluid?tab=readme-ov-file#priorities)
+
 Typically, synchronous libraries build a dependency tree, detect and resolve
 circular dependencies, and rebalance the execution order automatically.
 
@@ -146,21 +148,9 @@ re-evaluate multiple times unnecessarily!
 
 Does `Fluid` solve this diamond dependency problem automatically? No, it
 doesn't! But instead, it gives you a powerful tool to solve it yourself:
-`priorities`. A solved dependency graph would build the following timeline of
-updates:
+`priorities`.
 
-Resolved graph of dependencies above would build a following timeline of updates:
-
-```
-price
- |
- +---> tax
- +---> shipping
-     |
-     +---> showTotal
-```
-
-In `Fluid`, you declare these relationships explicitly:
+You declare these relationships explicitly:
 
 ```typescript
 const _price_ = Fluid.val(0)
@@ -190,6 +180,17 @@ const _totalSummary_ = Fluid.derive(
 Fluid.write(_price_, 20.00)
 
 console.log(Fluid.read(_totalSummary_)) // Final price: $26.60 (incl. tax: $1.60, shipping: $5.00)
+```
+
+Resolved graph of dependencies above would build a following timeline of updates:
+
+```
+_price_
+ |
+ +---> _tax_
+ +---> _shipping_
+ |
+ +---> _totalSummary_
 ```
 
 Every `derive` and `listen` accepts a `priority` option. This allows you
@@ -226,8 +227,9 @@ Fluid.write(_msg_, "Hi?")
 // 1: Hi?
 ```
 
-
 ### 2. Transactions
+
+[Transactions API](https://github.com/PunGy/fluid?tab=readme-ov-file#transactions)
 
 Batching changes is a common feature in reactive systems. In `Fluid`, the
 approach might look different at first, but it is highly controllable and
@@ -442,10 +444,6 @@ memory management and may need to use tools like `Fluid.destroy` to properly
 unsubscribe and clean up unused reactive objects, preventing potential memory
 leaks.
 
-<panel class="info">
-  You can find documentation about API on the <a href="https://github.com/PunGy/fluid">GitHub</a>
-</panel>
-
 ## Summary
 
 If you are looking for a robust, low-overhead, and easy-to-adopt reactive
@@ -456,6 +454,6 @@ management systems.
 
 ### Links
 
-- Source code: [GitHub](https://github.com/PunGy/fluid).
+- Source code and documentation: [GitHub](https://github.com/PunGy/fluid).
 - Use in your project: [NPM](https://www.npmjs.com/package/reactive-fluid).
 

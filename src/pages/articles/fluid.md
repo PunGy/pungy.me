@@ -2,7 +2,7 @@
 layout: "../../layouts/Article.astro"
 title: "Fluid: reactivity with maximum control"
 description:
-    A library that reveals the entire path of state change, ensuring that every mutation, dependency, notification, and order of execution is plainly visible and subject to the developer’s intent
+    Zero-dependency library for creating reactive systems with maximum control.
 date: 10/07/2025
 ---
 
@@ -26,7 +26,7 @@ with the steep learning curve of Functional-Reactive Programming, which
 developers **must** fully adopt. Improper use can often lead to chaotic,
 hard-to-debug code.
 
-`Fluid` was created out of a desire to rebalance reactivity in favor of
+[Fluid](https://github.com/PunGy/fluid) was created out of a desire to rebalance reactivity in favor of
 clarity, predictability, and a greater level of control, even if it comes at
 the cost of some convenience. It aims to reveal the entire path of state
 change, so that every mutation, every dependency, every notification, and the
@@ -163,7 +163,7 @@ price
 In `Fluid`, you declare these relationships explicitly:
 
 ```typescript
-const _price_ = Fluid.val()
+const _price_ = Fluid.val(0)
 
 const _tax_ = Fluid.derive(
   _price_,
@@ -385,6 +385,66 @@ pushToCart(5)
 
 Fluid.read(_cartSum_) // 15
 ```
+
+### 4. Dynamic Dependencies
+
+Because reactive objects in `Fluid` are first-class citizens, they can be
+nested inside one another. This powerful feature allows you to create **dynamic
+dependencies**, where a derived value can switch its underlying sources based
+on application state.
+
+Imagine a scenario where a `_son_` reactive value reflects different sources
+based on his `_age_`. When under 18, his "voice" is derived from his parents
+(`_mommy_` and `_daddy_`). Once he turns 18, his voice becomes his own,
+represented by a separate, writable reactive source (`_matureSon_`).
+
+```typescript
+const _mommy_ = Fluid.val("Eat your breakfast");
+const _daddy_ = Fluid.val("Go to school");
+
+const _age_ = Fluid.val(10);
+
+const _matureSon_ = Fluid.val("...");
+const _youngSon_ = Fluid.derive(
+    [_mommy_, _daddy_],
+    (mommy, daddy) => `Mommy said: "${mommy}", Daddy said: "${daddy}"`
+);
+
+// This derivation returns another reactive object, not a simple value.
+const _son_ = Fluid.derive(
+    _age_,
+    age => (age >= 18 ? _matureSon_ : _youngSon_)
+);
+
+// To get the final value, you must 'unwrap' it twice:
+// 1. Fluid.read(_son_) -> returns either _matureSon_ or _youngSon_
+// 2. Fluid.read( ... ) -> reads the value from that inner object
+console.log(Fluid.read(Fluid.read(_son_))); // Mommy said: "Eat your breakfast", Daddy said: "Go to school"
+
+Fluid.write(_age_, 20);
+
+// Now, _son_ points to _matureSon_
+console.log(Fluid.read(Fluid.read(_son_))); // "..."
+
+// We can now write directly to the new source
+const currentSonSource = Fluid.read(_son_);
+Fluid.write(currentSonSource, "I want to be a musician");
+
+console.log(Fluid.read(Fluid.read(_son_))); // "I want to be a musician"
+```
+
+While this example is intentionally simple, this pattern requires careful
+consideration in real-world applications. When a dependency is switched (e.g.,
+from `_youngSon_` to `_matureSon_`), the old source (`_youngSon_`) is no longer
+tracked by `_son_`. If it has no other subscribers, it may become eligible for
+garbage collection. However, for more complex objects, you should be mindful of
+memory management and may need to use tools like `Fluid.destroy` to properly
+unsubscribe and clean up unused reactive objects, preventing potential memory
+leaks.
+
+<panel class="info">
+  You can find documentation about API on the <a href="https://github.com/PunGy/fluid">GitHub</a>
+</panel>
 
 ## Summary
 

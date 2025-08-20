@@ -282,19 +282,47 @@ only need to deal with the transaction itself!
 ```typescript
 import { Fluid, ReactiveTransaction } from 'reactive-fluid'
 
-function runWithWarning(transaction: ReactiveTransaction) {
+class Graphics {
+    // ...
+
+    addObject(object) {
+        this.objects.push({
+            draw() {
+                // ...
+            }
+        })
+    }
+    redraw() {
+        this.ctx.clear()
+        this.objects.forEach(object => object.draw())
+    }
+}
+const graphics = new Graphics()
+
+/**
+ * Execute transaction and redraw graphics on success
+ */
+function update(transaction: ReactiveTransaction) {
     const res = transaction.run()
-    if (Fluid.transaction.isRejected(res)) {
-        console.warn(`transaction rejected with error: ${res.error}`)
+    if (Fluid.transaction.isResolved(res)) {
+        graphics.redraw();
     }
 }
 
-const _a_ = Fluid.val('a')
-const tr1 = Fluid.transaction.write(_a_, () => Fluid.transaction.resolved('A'))
-const tr2 = Fluid.transaction.write(_a_, () => Fluid.transaction.rejected('just not'))
+const player = Fluid.val({ x: 0, y: 0 })
+const enemy = Fluid.val({ x: 10, y: 0 })
 
-runWithWarning(tr1) // No warning, _a_ is now "A"
-runWithWarning(tr2) // console.warns 'Transaction rejected with error: just not'
+// register objects
+graphics.addObject(player)
+graphics.addObject(enemy)
+
+const movePlayer = Fluid.transaction.write(_player_, player => {
+    player.x += 10;
+    return Fluid.transaction.resolved(player))
+}
+
+// if moving would be successful - scene would be redrawed!
+update(movePlayer)
 ```
 
 #### Composing Writes
@@ -358,6 +386,13 @@ const update = Fluid.transaction.compose(
 update.run() // listener wasn't triggered
 Fluid.read(_userinfo_) // "Alice Liddell, 22" (state remains unchanged)
 ```
+
+That's not all about transactions. Important questions might appear: how can I
+see updated value of previously succeeded transactions in composition list? How
+can I read updated state of dependended computed?
+
+If you are interested in answers, you can find them in [Composing
+Transactions](https://github.com/PunGy/fluid?tab=readme-ov-file#composing-transactions) section in README!
 
 ### 3. No Hidden Memoization
 

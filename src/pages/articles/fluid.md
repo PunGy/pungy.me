@@ -136,9 +136,11 @@ understands that `showTotal` should be re-evaluated only after `shipping` and
 
 ```
    _price_
- /         \
-tax      shipping
- \         /
+ /    |    \
+⌄     |     ⌄
+tax   |  shipping
+ \    |    /
+  ⌄   ⌄   ⌄
   showTotal
 ```
 
@@ -279,6 +281,8 @@ This is an incredibly useful concept. You can pass transactions around as
 objects and operate on them without needing to know *what* they write to—you
 only need to deal with the transaction itself!
 
+Here is an example with graphics redrawing on transaction success!
+
 ```typescript
 import { Fluid, ReactiveTransaction } from 'reactive-fluid'
 
@@ -318,7 +322,7 @@ graphics.addObject(enemy)
 
 const movePlayer = Fluid.transaction.write(_player_, player => {
     player.x += 10;
-    return Fluid.transaction.success(player))
+    return Fluid.transaction.success(player)
 }
 
 // if moving would be successful - scene would be redrawed!
@@ -473,8 +477,7 @@ console.log(Fluid.read(Fluid.read(_son_))); // "I want to be a musician"
 While this example is intentionally simple, this pattern requires careful
 consideration in real-world applications. When a dependency is switched (e.g.,
 from `_youngSon_` to `_matureSon_`), the old source (`_youngSon_`) is no longer
-tracked by `_son_`. If it has no other subscribers, it may become eligible for
-garbage collection. However, for more complex objects, you should be mindful of
+tracked by `_son_`, and all subscribes to old source is still active. So, for more complex objects, you should be mindful of
 memory management and may need to use tools like `Fluid.destroy` to properly
 unsubscribe and clean up unused reactive objects, preventing potential memory
 leaks.

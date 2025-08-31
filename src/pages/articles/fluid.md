@@ -259,20 +259,20 @@ const inc = () => Fluid.transaction.write(
     _counter_,
     count => {
         if (count < 3)
-            return Fluid.transaction.resolved(count + 1)
+            return Fluid.transaction.success(count + 1)
         else
-            return Fluid.transaction.rejected() 
+            return Fluid.transaction.error() 
     },
 )
 
 let result = inc().run()
-console.log(Fluid.read(_counter_), Fluid.transaction.isResolved(result)) // 2, true
+console.log(Fluid.read(_counter_), Fluid.transaction.isSuccess(result)) // 2, true
 
 result = inc().run()
-console.log(Fluid.read(_counter_), Fluid.transaction.isResolved(result)) // 3, true
+console.log(Fluid.read(_counter_), Fluid.transaction.isSuccess(result)) // 3, true
 
 result = inc().run()
-console.log(Fluid.read(_counter_), Fluid.transaction.isResolved(result)) // 3, false
+console.log(Fluid.read(_counter_), Fluid.transaction.isSuccess(result)) // 3, false
 ```
 
 This is an incredibly useful concept. You can pass transactions around as
@@ -304,7 +304,7 @@ const graphics = new Graphics()
  */
 function update(transaction: ReactiveTransaction) {
     const res = transaction.run()
-    if (Fluid.transaction.isResolved(res)) {
+    if (Fluid.transaction.isSuccess(res)) {
         graphics.redraw();
     }
 }
@@ -318,7 +318,7 @@ graphics.addObject(enemy)
 
 const movePlayer = Fluid.transaction.write(_player_, player => {
     player.x += 10;
-    return Fluid.transaction.resolved(player))
+    return Fluid.transaction.success(player))
 }
 
 // if moving would be successful - scene would be redrawed!
@@ -359,9 +359,9 @@ With a composed transaction - only once!
 ##### Canceling Transactions
 
 Another important aspect of transactions is atomicity: all changes are rejected
-if any single part of the transaction is rejected. This prevents the
+if any single part of the transaction is an error. This prevents the
 application from entering a broken or inconsistent state. `Fluid` follows this
-principle with the `rejected()` state.
+principle with the `error()` state.
 
 ```typescript
 const _name_ = Fluid.val("Alice")
@@ -379,7 +379,7 @@ Fluid.listen(
 
 const update = Fluid.transaction.compose(
     Fluid.transaction.write(_name_, "Mark"),
-    Fluid.transaction.write(_surname_, () => Fluid.transaction.rejected("NOT FOUND")),
+    Fluid.transaction.write(_surname_, () => Fluid.transaction.error("NOT FOUND")),
     Fluid.transaction.write(_age_, 30),
 )
 

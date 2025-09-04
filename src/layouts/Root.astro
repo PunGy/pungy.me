@@ -2,6 +2,7 @@
 import 'normalize.css/normalize.css'
 import lightIcon from '../../assets/light-theme.png'
 import darkIcon from '../../assets/dark-theme.png'
+import Analytics from '@vercel/analytics/astro'
 
 export interface Props {
 	title: string;
@@ -22,6 +23,7 @@ const { title, withoutHeader } = Astro.props;
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 		<link rel="manifest" href="/site.webmanifest">
 		<meta name="generator" content={Astro.generator} />
+    <Analytics />
 		<title>{title}</title>
 	</head>
 	<body>

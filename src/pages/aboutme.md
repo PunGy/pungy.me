@@ -10,11 +10,10 @@ processor for 1,000+ page documents and the core UI for an embedded TV OS.
 
 ## **Technical Expertise**
 
-*   **Languages:** TypeScript/JavaScript, Go, Java, C++, Haskell, Common Lisp.
-*   **Architecture & Paradigms:** Systems Design & Architecture, Compiler
-Design & Theory, Type Systems, Algorithmic Analysis, Distributed Systems,
-Functional Programming (FP), Reactive Programming, Object-Oriented Programming
-(OOP).
+*   **Languages:** TypeScript/JavaScript, Go,  C++, Haskell.
+*   **Architecture & Paradigms:** Systems Design & Architecture, Type Systems,
+Algorithmic Analysis, Distributed Systems, Functional Programming (FP),
+Reactive Programming, Object-Oriented Programming (OOP).
 *   **Specialties:** UI Frameworks, Performance Optimization, Graphics
 Rendering, Developer Tooling, State Management.
 

@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Root.astro';
 import Resume from './aboutme.md'
+import Links from './components/Links.astro'
+import Intro from './components/Intro.astro'
 import lightIcon from '../../assets/light-theme.png'
 ---
 
@@ -24,12 +26,11 @@ import lightIcon from '../../assets/light-theme.png'
                   <a href="/projects">projects</a>
                 </div>
               </div>
-              <p>
-                I love to invent, and bicycles. Sometimes together.
-              </p>
+              <Intro />
               <p>
                 Email: <strong>max.yakovlev555@gmail.com</strong>
               </p>
+              <Links />
             </div>
         </aside>
         <main class="semantic">

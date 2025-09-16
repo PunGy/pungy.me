@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Root.astro';
+import Links from './components/Links.astro'
+import Intro from './components/Intro.astro'
 
 const timestamp = dateString => {
   const [day, month, year] = dateString.split('/').map(d => parseInt(d, 10))
@@ -39,11 +41,10 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
             <img id="myself-photo" src="/images/myself.jpg" alt="My picture" />
             <div id="text-container">
               <p>
-                Hi, I am <strong>Maksim</strong>. I love to invent, and bicycles. Sometimes together.
+                Hi, I am <strong>Maksim</strong>.
               </p>
-              <p>
-                You can find me on <a href="https://github.com/PunGy">GitHub</a> and <a href="https://www.linkedin.com/in/pungy/">LinkedIn</a>.
-              </p>
+              <Intro />
+              <Links />
             </div>
         </aside>
         <main class="semantic">
@@ -81,6 +82,9 @@ const articles = Array.from(await Astro.glob('./articles/**/*.md'))
     }
     h1 {
         margin: 0.5rem;
+    }
+    #text-container > p {
+      text-align: center;
     }
     .article {
         text-decoration: none;

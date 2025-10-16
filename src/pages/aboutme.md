@@ -23,7 +23,7 @@ Rendering, Developer Tooling, State Management.
 
 ### **Open Source**
 
-**Fluid** - [github.com/PunGy/fluid](https://github.com/PunGy/fluid)
+**REROI** - [github.com/PunGy/reroi](https://github.com/PunGy/reroi)
 
 *Creator & Maintainer*
 

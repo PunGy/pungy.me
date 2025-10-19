@@ -6,6 +6,8 @@ import muraImg from '../../../assets/mura-engine-demo.png'
 import reroiImg from '../../../assets/reroi-logo.png'
 import vimImg from '../../../assets/vimImg.png'
 import langdevImg from '../../../assets/langdev-demo.png'
+import rayCastingImg from '../../../assets/ray-casting-demo.png'
+import physicsImg from '../../../assets/physics-engine-demo.png'
 
 interface Project {
   title: string;
@@ -63,6 +65,22 @@ const projects: Array<Project> = [
     img: vimImg.src,
     stack: ['Fennel', 'LazyVim'],
     sourceLink: 'https://github.com/PunGy/neovim-dotfiles',
+  },
+  {
+    title: 'Physics demo',
+    description: 'A desperate attempt to make a working physics engine over the weekend. General rigid body kinematics.',
+    img: physicsImg.src,
+    stack: ['TypeScript'],
+    sourceLink: 'https://github.com/PunGy/physics-engine',
+    link: 'https://physics-demo.pungy.me/'
+  },
+  {
+    title: 'Ray-casting',
+    description: 'Quite a classic implementation of ray-casting using Canvas2D',
+    img: rayCastingImg.src,
+    stack: ['JavaScript', 'Canvas2D'],
+    sourceLink: 'https://github.com/PunGy/ray-casting-canvas',
+    link: 'https://ray-casting.pungy.me/'
   },
 ]
 ---

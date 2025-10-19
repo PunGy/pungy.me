@@ -8,14 +8,15 @@ processor for 1,000+ page documents and the core UI for an embedded TV OS.
 
 ---
 
-## **Technical Expertise**
+## **Technical Skills**
 
 *   **Languages:** TypeScript/JavaScript, Go,  C++, Haskell.
-*   **Architecture & Paradigms:** Systems Design & Architecture, Type Systems,
-Algorithmic Analysis, Distributed Systems, Functional Programming (FP),
-Reactive Programming, Object-Oriented Programming (OOP).
-*   **Specialties:** UI Frameworks, Performance Optimization, Graphics
-Rendering, Developer Tooling, State Management.
+*   **Expertise:** Systems Design & Architecture, Type Systems,
+Compiler and Interpretator Theory, Algorithmic Analysis, Distributed Systems,
+2D Rendering, Functional Programming (FP), Reactive Programming,
+Object-Oriented Programming (OOP).
+*   **Specialties:** UI Systems, UI Frameworks Development, Performance
+Optimization, Developer Tooling, State Management Systems.
 
 ---
 
@@ -39,24 +40,6 @@ prioritized scheduling, to solve complex state synchronization challenges.
 Core R&D engineer on a greenfield project to build an innovative, browser-based
 office package and especially a word processor designed to outperform all
 existing solutions.
-
-*   **Spearheaded the architecture for the desktop version** (Electron),
-ensuring code reuse and maintaining feature parity with the web-based
-application, successfully prototyping and validating a hybrid architecture for
-a local-first environment.
-*   **Invented and formalized a novel Domain-Specific Language (DSL)** on top
-of TypeScript to manage and query complex document selection states, proving
-its ability to reduce the logical complexity, prevent entire classes of
-state-related bugs, and enabling developers to add complex new selectable
-objects (e.g., tables, embedded media) in under a day.
-*   **Engineered a platform-agnostic DevTools and state inspection library**
-from scratch, enabling real-time modification and debugging of the application
-state and graphics, similar to Pixi.js DevTools. It makes possible to find and
-inspect bugs in seconds and provide interactive way to develop and test new
-features.
-*   **Implemented a non-indexing, asynchronous full-text search engine**
-capable of querying 1M+ characters across a nested document tree in under 300ms
-on low-spec hardware, while maintaining a 60fps typing experience.
 
 ### **EPAM Systems** | Kraków, Poland
 **Senior Software Engineer** | Oct 2021 - Oct 2023

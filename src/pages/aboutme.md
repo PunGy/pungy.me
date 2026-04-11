@@ -25,10 +25,14 @@ My career has been a progression from building applications to building the plat
 
 As Creator and Maintainer, this project is my exploration into the frontiers of reactive programming. I architected and built a high-performance library from scratch in TypeScript, developing novel approaches to fine-grained state management. This included implementing features like ACID-compliant transactional updates and prioritized scheduling to solve complex state synchronization challenges.
 
-### **Yandex** | Moscow, Russia
-*Senior Software Engineer* | Oct 2023 - Present
+**SHIK** - [github.com/PunGy/shik](https://github.com/PunGy/shik)
 
-I am a core R&D engineer on a greenfield project to build an innovative, browser-based office package, with a focus on a word processor designed to outperform existing solutions.
+A functional, dynamically-typed scripting language designed for shell automation with a minimalist syntax designed to be easily written in the terminal.
+
+### **Yandex** | Moscow, Russia
+*Staff Software Engineer* | Oct 2023 - Now
+
+Core R&D engineer on a greenfield project to build an innovative, browser-based office package and especially a word processor designed to outperform all existing solutions.
 
 ### **EPAM Systems** | Kraków, Poland
 *Senior Software Engineer* | Oct 2021 - Oct 2023

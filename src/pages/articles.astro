@@ -13,7 +13,7 @@ const isArticleSeries = article => article.frontmatter.collection_id != null;
 const series = new Map()
 
 // Only single heading articles
-const articles = Array.from(await Astro.glob('./articles/**/*.md'))
+const articles = Object.values(import.meta.glob('./articles/**/*.md', { eager: true }))
   .reduce((articles, article) => {
     if (isArticleSeries(article)) {
       const { part, collection_id } = article.frontmatter;

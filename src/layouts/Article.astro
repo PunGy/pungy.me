@@ -5,8 +5,8 @@ const { content } = props
 
 const isSeries = content.collection_id;
 
-const otherArticles = isSeries ? Array.from(
-    await Astro.glob(`../pages/articles/**/*.md`)
+const otherArticles = isSeries ? Object.values(
+    import.meta.glob('../pages/articles/**/*.md', { eager: true })
   )
     .filter((page) => page.frontmatter.collection_id === content.collection_id)
     .sort((page1, page2) => page1.frontmatter.part - page2.frontmatter.part)

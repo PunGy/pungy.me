@@ -5,6 +5,8 @@ description: A functional scripting language designed for ergonomic terminal aut
 date: 07/04/2026
 ---
 
+# Shik — I finally feel joy writing scripts
+
 You know that feeling when the thought in your head is simple and clear — "go through files, find the right ones, move them" — but between the thought and the result there's a wall of googling flags, quoting rules, and incompatible utilities?
 
 I've been into language design for a while — what interests me most is syntax, how form shapes thinking. When I decided to build a complete language, I picked the area where I was most frustrated and where nothing fit my taste — terminal scripting.

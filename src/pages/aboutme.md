@@ -1,61 +1,60 @@
-## **About Me**
+## About Me
 
-I'm a software engineer driven by a passion for building complex systems from first principles. I thrive on the challenge of turning theoretical concepts into tangible, high-performance software, and I'm most at home architecting novel solutions from the ground up. This journey has led me to design and implement everything from a word processor built for extreme performance to the core UI of an embedded TV OS. My work is about crafting elegant, robust, and efficient solutions to foundational problems in software.
-
----
-
-## **Areas of Focus & Expertise**
-
-My work is grounded in a deep understanding of computer science fundamentals, which I apply to specialized domains.
-
-*   **Core Disciplines:** Systems Design & Architecture, Computer Graphics, Type Systems, Compiler and Interpreter Theory, Algorithmic Analysis.
-*   **Methodologies & Paradigms:** Functional Programming (FP), Reactive Programming, Object-Oriented Programming (OOP).
-*   **Applied Specialties:** UI Systems & Frameworks, Performance Optimization, Developer Tooling, State Management, 2D Rendering.
-*   **Languages:** My primary tools are TypeScript/JavaScript and Rust, with deep experience in Go, C++, Common Lisp, and Haskell for more specialized problem-solving.
+I'm a software engineer. I've built a word processor engine optimized for working with 1000 pages documents and desktop office suite available for every OS, a functional programming language for task automation, and the core UI of an embedded TV OS . I'm drawn to foundational software where the design decisions really matter
 
 ---
 
-## **Professional Journey**
+## What I Work On
 
-My career has been a progression from building applications to building the platforms and systems they run on.
+*   **Engines & Runtimes** — Reactive state systems, document rendering
+*   **Language Design** — Interpreters, compilers, type systems, DSLs
+*   **Systems Programming** — Rust, cross-platform desktop applications, build and asset pipelines, file systems
+*   **Applied CS** — Algorithm design, data structures, performance engineering
 
-### **Open Source**
+**Languages:** Rust, TypeScript, Go, C++, Common Lisp, Haskell — whatever the problem asks for.
 
-**REROI** - [github.com/PunGy/reroi](https://github.com/PunGy/reroi)
+---
 
-As Creator and Maintainer, this project is my exploration into the frontiers of reactive programming. I architected and built a high-performance library from scratch in TypeScript, developing novel approaches to fine-grained state management. This included implementing features like ACID-compliant transactional updates and prioritized scheduling to solve complex state synchronization challenges.
+## Open Source
 
-**SHIK** - [github.com/PunGy/shik](https://github.com/PunGy/shik)
+**Reroi** — [github.com/PunGy/reroi](https://github.com/PunGy/reroi)
+A reactive state management runtime built from scratch. Fine-grained dependency tracking, transactional updates, prioritized scheduling. Built because existing solutions hid too much.
 
-A functional, dynamically-typed scripting language designed for shell automation with a minimalist syntax designed to be easily written in the terminal.
+**Shik** — [github.com/PunGy/shik](https://github.com/PunGy/shik)
+A functional scripting language for shell automation. Dynamically typed, minimalist syntax, designed to be comfortable to write directly in a terminal.
 
-### **Yandex** | Moscow, Russia
-*Staff Software Engineer* | Oct 2023 - Now
+---
 
-Core R&D engineer on a greenfield project to build an innovative, browser-based office package and especially a word processor designed to outperform all existing solutions.
+## Professional Work
 
-### **EPAM Systems** | Kraków, Poland
-*Senior Software Engineer* | Oct 2021 - Oct 2023
+### Yandex | Moscow
+*Staff Engineer* | 2023 — present
 
-During my time at EPAM, I tackled large-scale systems challenges for two distinct projects.
+Core R&D on a web-based office suite — primarily the word processor.
 
-*   On an **Embedded Smart-TV OS**, I architected core abstractions for managing asynchronous UI operations within a large Node.js application, significantly improving system stability. I also led an effort to overhaul critical low-level utilities, increasing test coverage by 30% and shipping a benchmark library to prevent performance regressions.
-*   For a **Security & Resource Management Platform**, I stepped in to lead technical stabilization after a team restructure. By triaging the technical debt backlog, I unblocked feature development for the team. I also drove a major code unification effort, replacing a chaotic layout system with a purpose-built component architecture that accelerated future development.
+Built the document selection model from scratch, including a query DSL inspired by logic programming for composing selection state predicates with lazy evaluation and caching. Researched and implemented the text search engine, querying 1M+ characters across a nested document tree in under 300ms on low-spec hardware, while maintaining a 60fps typing experience
 
-**Mentorship & Education:** A fulfilling part of my role was mentoring engineers in advanced software design. I also revamped the company's largest Computer Science course, directly improving the technical education for hundreds of my peers.
+Currently leading the desktop version — an Electron application with typed IPC bridge, cross-platform packing and file system work (macOS/Windows/Linux including Astra), and a service override layer that lets manipulate way how web communicates with API.
 
-### **Earlier Career** | 2016 - 2021
+### EPAM Systems | Kraków, Poland
+*Senior Engineer* | 2021 — 2023
 
-My earlier roles at **Sperasoft**, **BuildSafe**, **Luxoft**, and **Hyperauto**, along with my freelance work, built the foundation for my current focus. Highlights include:
+Two projects:
 
-*   Architecting a custom React Server-Side Rendering (SSR) engine and migrating a build system to esbuild, decreasing build times by 200%.
-*   Leading a performance initiative that cut bundle size by 20% and measurably improved Web Vitals.
-*   Architecting and delivering a PoC for a large-scale data-set processing pipeline, presented at CES 2020.
-*   Introducing modern DevOps practices (Docker, Git) to a legacy environment, automating deployment and saving significant developer time.
+On an **embedded Smart TV OS**, architected core abstractions for asynchronous UI operations within a Node.js runtime. Overhauled low-level utility layer — 30% test coverage increase, shipped a benchmark library for regression prevention.
 
-## **Education**
+On a **security platform**, led technical stabilization after a team restructure. Triaged technical debt backlog, replaced an ad-hoc layout system with a purpose-built component architecture.
 
-**Vladivostok State University College** | 2016 - 2019
+Also rewrote the company's largest internal Computer Science course and mentored engineers in software design.
 
-*   Studied Programming and Computer Systems
+### Earlier Work | 2016 — 2021
+Sperasoft, BuildSafe, Luxoft, Hyperauto, freelance.
 
+Built a custom React SSR engine. Migrated build systems to esbuild (3x faster builds). Led performance work that cut bundle sizes by 20%. Architected a large-scale data processing pipeline demo presented at CES 2020. Introduced Docker and Git-based workflows to a legacy environment.
+
+---
+
+## Education
+
+**Vladivostok State University College** | 2016 — 2019
+Studied Programming and Computer Systems

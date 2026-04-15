@@ -86,7 +86,7 @@ lst $> list.map (^ 2)   ; [1 4 9 16]
 
 `(+ 1)` is a function meaning "add one." `(* 2)` is "multiply by two." Uniform, no lambdas needed.
 
-But why does `(- 1)` mean "subtract one" and not "subtract from one"? This is a deliberate, heretical decision! In Shik, argument order is a design choice — everything is built around currying. For arithmetic: **the first argument is the modifier, the second is the base**. `- 1 5` = `4`, because `1` is "how much to subtract" and `5` is "from what." If `-` worked as "first minus second," `(- 1)` would mean "one minus something," and you'd have to write `fn [x] - x 1` or introduce `flip`. You can read more about the argument ordering philosophy in the [docs](https://github.com/PunGy/shik?tab=readme-ov-file#function-arguments-position-rule).
+But why does `(- 1)` mean "subtract one" and not "subtract from one"? This is a deliberate, heretical decision! In Shik, argument order is a design choice — everything is built around currying. For arithmetic: **the first argument is the modifier, the second is the base**. `- 1 5` = `4`, because `1` is "how much to subtract" and `5` is "from what." If `-` worked as "first minus second," `(- 1)` would mean "one minus something," and you'd have to write `fn [x] - x 1` or introduce `flip`. You can read more about the argument ordering philosophy in the [docs](https://blog.pungy.me/articles/shik-book/functions#argument-order-philosophy).
 
 **Four operators — that's it.** All about application, composition, and most importantly precedence — from tightest binding to loosest:
 
@@ -165,7 +165,7 @@ shell.lines "git branch" $>
   list.iterate print
 ```
 
-That's it. Seriously. If you've read this block, you know Shik. More detail in the [docs](https://github.com/PunGy/shik/blob/main/README.md).
+That's it. Seriously. If you've read this block, you know Shik. If you're interested in details, you can read the [book](https://blog.pungy.me/articles/shik-book)!
 
 Now — the real tasks this was all built for.
 
@@ -290,4 +290,5 @@ The project is in active development (v0.7.1). This is not a production-ready to
 
 Shik won't replace bash — it's not a shell. It won't replace Python for bots. But if every couple of days you need to move, filter, rename, or generate a report — and every time you spend more time fighting the tool than solving the problem — give it a shot. You might find some joy in it too.
 
-**[github.com/pungy/shik](https://github.com/pungy/shik)**
+- **[GitHub](https://github.com/pungy/shik)**
+- **[Shik Book](https://blog.pungy.me/articles/shik-book)**

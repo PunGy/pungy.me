@@ -165,7 +165,7 @@ shell.lines "git branch" $>
   list.iterate print
 ```
 
-That's it. Seriously. If you've read this block, you know Shik. If you're interested in details, you can read the [book](https://blog.pungy.me/articles/shik-book)!
+That's it. Seriously. If you've read this block, you know Shik. If you're interested in details, you can read the [book](https://blog.pungy.me/articles/shik-book/getting-started)!
 
 Now — the real tasks this was all built for.
 
@@ -291,4 +291,4 @@ The project is in active development (v0.7.1). This is not a production-ready to
 Shik won't replace bash — it's not a shell. It won't replace Python for bots. But if every couple of days you need to move, filter, rename, or generate a report — and every time you spend more time fighting the tool than solving the problem — give it a shot. You might find some joy in it too.
 
 - **[GitHub](https://github.com/pungy/shik)**
-- **[Shik Book](https://blog.pungy.me/articles/shik-book)**
+- **[Shik Book](https://blog.pungy.me/articles/shik-book/getting-started)**

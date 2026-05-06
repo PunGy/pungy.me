@@ -30,11 +30,7 @@ A functional scripting language for shell automation. Dynamically typed, minimal
 ### Yandex | Moscow
 *Staff Engineer* | 2023 — present
 
-Core R&D on a web-based office suite — primarily the word processor.
-
-Built the document selection model from scratch, including a query DSL inspired by logic programming for composing selection state predicates with lazy evaluation and caching. Researched and implemented the text search engine, querying 1M+ characters across a nested document tree in under 300ms on low-spec hardware, while maintaining a 60fps typing experience
-
-Currently leading the desktop version — an Electron application with typed IPC bridge, cross-platform packing and file system work (macOS/Windows/Linux including Astra), and a service override layer that lets manipulate way how web communicates with API.
+Core R&D on a web-based office suite.
 
 ### EPAM Systems | Kraków, Poland
 *Senior Engineer* | 2021 — 2023

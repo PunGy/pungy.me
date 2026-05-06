@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Root.astro';
 import currencyImg from '../../../assets/currency-converter.png'
+import rustyImg from '../../../assets/rusty-example.png'
+import shikImg from '../../../assets/shik-demo.png'
 import homeImg from '../../../assets/home-page-demo.png'
 import muraImg from '../../../assets/mura-engine-demo.png'
 import reroiImg from '../../../assets/reroi-logo.png'
@@ -43,6 +45,14 @@ const projects: Array<Project> = [
     link: 'https://lang-dev.pungy.me',
   },
   {
+    title: 'Shik',
+    description: 'A functional, dynamically-typed scripting language for REPL sessions.',
+    img: shikImg.src,
+    stack: ['Rust'],
+    sourceLink: 'https://github.com/PunGy/shik',
+    link: 'https://blog.pungy.me/articles/shik-book/getting-started',
+  },
+  {
     title: 'Home Page',
     description: 'The website you are currently reading! Fully static with Astro meta-framework!',
     img: homeImg.src,
@@ -81,6 +91,14 @@ const projects: Array<Project> = [
     stack: ['JavaScript', 'Canvas2D'],
     sourceLink: 'https://github.com/PunGy/ray-casting-canvas',
     link: 'https://ray-casting.pungy.me/'
+  },
+  {
+    title: '3D Renderer playground',
+    description: 'Quite buggy exploration of how 3D rendering works, while using plain Canvas2D',
+    img: rustyImg.src,
+    stack: ['JavaScript', 'Canvas2D'],
+    sourceLink: 'https://github.com/PunGy/rusty',
+    link: 'https://rusty-playground.pungy.me/'
   },
 ]
 ---

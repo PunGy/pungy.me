@@ -2,8 +2,6 @@
 
 I'm a software engineer with 9+ years of experience designing and building high-performance systems. I specialize in leading complex R&D initiatives and turning them into products that reach the market.
 
-I've developed core technologies for a browser-based word processor capable of handling documents with over 1,000 pages, led development of a cross-platform desktop office suite, and built the core UI of an embedded TV OS.
-
 ---
 
 ## What I Work On

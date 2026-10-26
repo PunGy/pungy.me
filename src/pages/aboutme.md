@@ -31,7 +31,7 @@ A functional scripting language for shell automation. Dynamically typed, minimal
 ### Yandex | Vladivostok, Russia (remote)
 *Lead Software Engineer* | Apr 2025 — present
 
-Leading development of an [Electron-based desktop office suite](https://360.yandex.ru/documents/desktop/) from prototype to commercial release. Combine hands-on development with technical leadership, guiding web application engineers through native development and desktop releases, and coordinating changes across the shared application and platform-specific code.
+Leading development of an [Electron-based desktop office suite](https://360.yandex.ru/documents/desktop/?lang=en) from prototype to commercial release. Combine hands-on development with technical leadership, guiding web application engineers through native development and desktop releases, and coordinating changes across the shared application and platform-specific code.
 
 Delivered cross-platform support, including Astra Linux and ALT Linux, with native OS integrations written in Objective-C, Go, Rust, and C. Designed and implemented resilient, cross-platform update infrastructure informed by The Update Framework.
 
@@ -40,7 +40,7 @@ Delivered local-file and cloud-storage workflows and supported licensing and dis
 ### Yandex | Moscow, Russia
 *Senior Software Engineer* | Oct 2023 — Apr 2025
 
-Core R&D on a greenfield [browser-based office suite](https://360.yandex.ru/documents/), with a focus on its word processor.
+Core R&D on a greenfield [browser-based office suite](https://360.yandex.ru/documents/?lang=en), with a focus on its word processor.
 
 Invented and formalized a TypeScript DSL to manage and query complex document selection states. Reduced logical complexity, prevented classes of state-related bugs, and enabled developers to add complex selectable objects, such as tables and embedded media, in under a day.
 
